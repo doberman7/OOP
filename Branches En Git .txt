@@ -1,0 +1,9 @@
+$ mkdir <torteria_folder>
+$ cd <torteria_folder>
+# add files
+
+$ git init
+$ git add .
+$ git commit -m "Agregar archivo Torteria"
+$ git remote add origin https://github.com/<creator-name>/<project-name>.git
+$ git push -u origin master
