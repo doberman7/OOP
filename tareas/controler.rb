@@ -25,6 +25,7 @@ class Controller
   end
   def delete
     @model.delete(@input)
+
   end
 end
 
