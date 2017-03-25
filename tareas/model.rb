@@ -2,8 +2,10 @@ require 'csv'
 
 class Task
   attr_reader :item
+  attr_accessor :status
   def initialize(item)
     @item = item
+    @status = " "
   end
 end
 
@@ -13,22 +15,32 @@ class Record
     CSV.foreach("list.csv") do |line_csv|
       array_line << line_csv  #convertir cada linea del CSV un objeto taskpara poderlo ver
     end
-    array_line
+     array_line
+
   end
 
   def add(newTask)#anadir Obj Task al CVR
     CSV.open("list.csv", "a+")do |line_csv|
-       line_csv << [newTask.item]
+       line_csv << [newTask.item , newTask.status]
     end
   end
 
-  def complete
+  def complete(num)
+    index
+    CSV.open("list.csv", "w+")do |line_csv|
+      line_csv.each do |item, status|
+          p item
+          p status
+      end
+      #AQUI
+    end
+
   end
 
   def delete(delet_at)
     array_from_BD = []
     num = 0
-    deleted = ""
+    deleted = nil
     CSV.foreach("list.csv") do |line_csv|
       num+=1
       array_from_BD << line_csv if  num != delet_at.to_i
@@ -39,9 +51,6 @@ class Record
           line_csv << new_data
         end
      end
-     p deleted#resolver el borrado
+     deleted
   end
-
 end
-# rec_inst = Record.new#agrgar a Controller
-# rec_inst.add(Task.new('Comprar chiles'))#Agregar una tarea a la lista

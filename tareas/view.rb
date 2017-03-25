@@ -3,8 +3,8 @@ class View
   def show(tasks)
     #mostrar tareas de acuerdo a formato
     num = 0
-    tasks.each do |line|
-      puts "#{num+=1} #{line.join}"
+    tasks.each do |task, status|
+      puts "#{num+=1}. [#{status}] #{task}"
     end
 
   end
