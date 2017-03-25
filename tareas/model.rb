@@ -5,7 +5,7 @@ class Task
   attr_accessor :status
   def initialize(item)
     @item = item
-    @status = " "
+    @status = nil
   end
 end
 
@@ -16,7 +16,6 @@ class Record
       array_line << line_csv  #convertir cada linea del CSV un objeto taskpara poderlo ver
     end
      array_line
-
   end
 
   def add(newTask)#anadir Obj Task al CVR
@@ -26,15 +25,17 @@ class Record
   end
 
   def complete(num)
-    index
-    CSV.open("list.csv", "w+")do |line_csv|
-      line_csv.each do |item, status|
-          p item
-          p status
-      end
-      #AQUI
+    array_from_BD = []
+    num = num.to_i - 1 #extrañamente no fue necesario "to_i" en en la asignacion a "num"
+    index.each.with_index do |item, index|
+      item[1] = "X" if index == num.to_i
+      array_from_BD  << item
     end
-
+    CSV.open("list.csv", "w+")do |line_csv|
+      array_from_BD.each do |item,status|
+        line_csv << [item,status]
+      end
+    end
   end
 
   def delete(delet_at)

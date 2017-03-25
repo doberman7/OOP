@@ -39,6 +39,7 @@ class Controller
   end
   def complete_console
     complete = @model.complete(@input)
+    @view.show(complete)    
   end
 end
 

@@ -4,6 +4,7 @@ class View
     #mostrar tareas de acuerdo a formato
     num = 0
     tasks.each do |task, status|
+      status = " " if status == nil
       puts "#{num+=1}. [#{status}] #{task}"
     end
 
