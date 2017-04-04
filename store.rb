@@ -13,21 +13,16 @@ class Product
     @name = name
   end
 end
-# class User#Convertir super clase
-#   attr_accessor :email, :password
-#   def initialize
-#     @email = email
-#     @pasword = pasword
-#   end
-# end
-#hacer que las clase user herede sus atributos a:
-  #sub vendedor
-  #sub admin
-  # sub user
-
-User = Struct.new(:email, :pasword)
-class Seller < User
+class User#Convertir super clase
+  attr_reader :email, :password
+end
+class Buyer < User
 
 end
 class Admin < User
+  def initialize
+    @email = "admin@email.com"
+    @password = "123qwe"
+  end
+
 end
