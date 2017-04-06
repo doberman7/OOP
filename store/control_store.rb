@@ -1,6 +1,6 @@
-require_relative "model_store"
-require_relative "view_store"
-
+require_relative "model_store"#requerir modelo de la tienda, donde se encuetran las clases y los metodos
+require_relative "view_store"#requerir Vistas de la tienda
+$log_result = nil
 class Controller
   def initialize
     @products = Product.new
@@ -19,20 +19,40 @@ class Controller
     end
   end
   def login
-    @view.log_view(@input.to_i)
     log = nil
-    until log == @admin.email
+    until log == :true_admin || log == :true_user
+
+      @view.log_view(@input.to_i)
       log = gets.chomp
-      @view.log_view(4) if log != @admin.email
-    end
-    @view.log_view(3)
-    log = nil
-    until log == @admin.password
-      log = gets.chomp
-      @view.log_view(5) if log != @admin.password
-    end
-    @view.log_view(7)
-    @view.log_view(6)
+      case
+        when log == @admin.email
+          @view.log_view(3)
+          until log == @admin.password
+            log = gets.chomp
+            break if log == "exit"
+            @view.log_view(5) if log != @admin.password #|| log != "exit"
+          end
+          if log != "exit" || log == @admin.password
+            @view.log_view(6)
+            log = :true_admin
+          end
+        when log != @admin.email
+          all_users = @admin.user_index
+          all_users.each do |user_data|
+            if user_data[1] == log#SI el email del arreglo == al input
+              @view.log_view(7) #welcomin user
+              until log == user_data[2]#AQUI
+                @view.log_view(3) #password
+                log = gets.chomp
+                if log == user_data[2]#input == password
+                  log = :true_user
+                end
+              end
+            end
+          end
+      end#end of case
+    end#end of until
+    $log_result = log
   end
   def register
     @view.reg_view(@input.to_i)
@@ -41,7 +61,6 @@ class Controller
     @buyer.password = gets.chomp
     @buyer.add_user(@buyer.email,@buyer.password)
     @view.reg_view(4)
-    
   end
 
 end

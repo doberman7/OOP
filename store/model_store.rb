@@ -14,7 +14,7 @@ class Product
   end
 end
 #---------------------------
-class User#Convertir super clase
+class Users#Convertir super clase
   attr_reader :email, :password
   def initialize(email=nil,password=nil)
     @email = email
@@ -27,24 +27,24 @@ class User#Convertir super clase
     user_index
   end
   def user_index
-    user_ary = []
+    all_users = []
     CSV.foreach("users.csv","a+")do |line_csv|
-      user_ary << line_csv
+      all_users << line_csv
     end
-    user_ary.each.with_index do |item, index|
+    all_users.each.with_index do |item, index|
       item.unshift( index+1 )
     end
-    user_ary
+    all_users
   end
-  #private :user_index
 end
 #-------------------------
-class Buyer < User
-  attr_accessor :email, :password
-end
-class Admin < User
+class Admin < Users
     def initialize
-      @email = "admin@email.com"
-      @password = "123qwe"
+      @email = "admin"
+      @password = "123"
     end
+end
+class Buyer < Admin
+  attr_accessor :email, :password
+  private :user_index
 end
