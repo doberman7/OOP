@@ -3,13 +3,14 @@ require_relative "view_store"#requerir Vistas de la tienda
 $log_result = nil
 class Controller
   def initialize
-    @products = Product.new
+    @product = Product.new
     @admin = Admin.new
     @buyer = Buyer.new
     @view = View.new
     @view.welcoming
     @input = gets.chomp
     menu(@input)
+    #menu_admin#SOLO PARA PRUEBAS
   end
   def menu(input)
     case input.to_i
@@ -33,8 +34,8 @@ class Controller
             @view.log_view(5) if log != @admin.password #|| log != "exit"
           end
           if log != "exit" && log == @admin.password
-            @view.log_view(6)
             log = :true_admin
+            menu_admin
           end
         when log == "menu"
           @view.welcoming
@@ -59,7 +60,7 @@ class Controller
           end
         end#end of if
     end#end of until
-    p $log_result = log
+    $log_result = log #log can be :true_user or :true_admin
   end#end of login method
 
   def register
@@ -71,7 +72,19 @@ class Controller
     @view.reg_view(3)
   end
   def menu_admin
-
+    @view.admin_view(0)
+    input_admin = gets.to_i
+    case input_admin
+      when 1
+        @view.admin_view(1)
+      when 2
+        @view.admin_view(2)
+        @product.product_index.each
+      when 3
+        @product.create_product(@product)
+      when 4
+        @admin.user_index
+    end
   end
 
 end

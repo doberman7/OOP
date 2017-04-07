@@ -1,20 +1,37 @@
 require "csv"
 
 class Store
-  def Product_creator
-    Product.new
-  end
+
 end
 class Product
-  attr_accessor :q,:c, :name
+  attr_accessor :quantity,:cost, :name
   def initialize
-    @quantity = q
-    @cost = c
+    @quantity = quantity
+    @cost = cost
     @name = name
+  end
+  def create_product(product)
+    CSV.open("products.csv","a+")do |line_csv|
+      line_csv << [product.quantity = gets.chomp, product.cost= gets.chomp, product.name= gets.chomp]
+    end
+    product_index
+  end
+  def product_index
+    all_products = []
+    CSV.foreach("products.csv","a+")do |line_csv|
+      all_products << line_csv
+    end
+    all_products.each.with_index do |item, index|
+      item.unshift( index+1 )
+    end
+      puts "# Quantity  Cost  Name"
+    all_products.each do |prod|
+       puts prod.join "     "
+    end
   end
 end
 #---------------------------
-class Users#Convertir super clase
+class Users#Clase padre
   attr_reader :email, :password
   def initialize(email=nil,password=nil)
     @email = email
@@ -34,8 +51,13 @@ class Users#Convertir super clase
     all_users.each.with_index do |item, index|
       item.unshift( index+1 )
     end
-    all_users
+    puts "# EMAIL   PASSWORD"
+    all_users.each do |user|
+      
+    end
   end
+
+
 end
 #-------------------------
 class Admin < Users

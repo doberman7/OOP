@@ -23,7 +23,13 @@ class View
      when 3 then puts "user added"
    end
   end
-  def menu_view(input)
+  def admin_view(input)
+    case input
+    when 0 then puts "Welcome Administrador. Your type is Admin\nSelect option number:\n1. Logout\n2. Products index\n3. Create product\n4. Users index"
+    when 1 then puts "get back soon"
+    when 2 then puts "This're the products we have"
+
+    end
 
   end
 end
