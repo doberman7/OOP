@@ -1,8 +1,5 @@
 require "csv"
 
-class Store
-
-end
 class Product
   attr_accessor :quantity,:cost, :name
   def initialize
@@ -11,8 +8,15 @@ class Product
     @name = name
   end
   def create_product(product)
+    puts "Enter quantity"
+    product.quantity = gets.chomp
+    puts "Enter cost"
+    product.cost= gets.chomp
+    product.cost.insert(0,"$")
+    puts "Enter name"
+    product.name= gets.chomp
     CSV.open("products.csv","a+")do |line_csv|
-      line_csv << [product.quantity = gets.chomp, product.cost= gets.chomp, product.name= gets.chomp]
+      line_csv << [product.quantity, product.cost, product.name]
     end
     product_index
   end
@@ -21,12 +25,9 @@ class Product
     CSV.foreach("products.csv","a+")do |line_csv|
       all_products << line_csv
     end
+    puts "# Quantity  Cost  Name"
     all_products.each.with_index do |item, index|
-      item.unshift( index+1 )
-    end
-      puts "# Quantity  Cost  Name"
-    all_products.each do |prod|
-       puts prod.join "     "
+      puts item.unshift( index+1 ).join "     "
     end
   end
 end
@@ -41,19 +42,25 @@ class Users#Clase padre
     CSV.open("users.csv","a+")do |line_csv|
       line_csv << [email,password]
     end
-    user_index
+    #user_index
   end
   def user_index
     all_users = []
     CSV.foreach("users.csv","a+")do |line_csv|
       all_users << line_csv
     end
+    puts "# EMAIL PASSWORD"
+    all_users.each.with_index do |item, index|
+      puts item.unshift( index+1 ).join " "
+    end
+  end
+  def user_index_no_visible
+    all_users = []
+    CSV.foreach("users.csv","a+")do |line_csv|
+      all_users << line_csv
+    end
     all_users.each.with_index do |item, index|
       item.unshift( index+1 )
-    end
-    puts "# EMAIL   PASSWORD"
-    all_users.each do |user|
-      
     end
   end
 
