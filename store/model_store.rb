@@ -1,5 +1,5 @@
 require "csv"
-
+#class with the prodcut methods
 class Product
   attr_accessor :quantity,:cost, :name
   def initialize
@@ -7,6 +7,7 @@ class Product
     @cost = cost
     @name = name
   end
+  #to create products
   def create_product(product)
     puts "Enter quantity"
     product.quantity = gets.chomp
@@ -15,31 +16,43 @@ class Product
     product.cost.insert(0,"$")
     puts "Enter name"
     product.name= gets.chomp
+    #the CSV file is open with write capabilities
     CSV.open("products.csv","a+")do |line_csv|
+      #the three instance varibles are put in a line of the csv file
       line_csv << [product.quantity, product.cost, product.name]
     end
+    #to finish the index of product are shown with the new item included
     product_index
   end
+  #to see all the products
   def product_index
+    #an emtu array is used
     all_products = []
     CSV.foreach("products.csv","a+")do |line_csv|
+     #each line of the csv file is push it in the array
       all_products << line_csv
     end
     puts "# Quantity  Cost  Name"
+    #then to all_products a index is added
     all_products.each.with_index do |item, index|
+      #each index is put at the begining at the item, an turn into a string
       puts item.unshift( index+1 ).join "     "
     end
   end
 end
 #---------------------------
-class Users#Clase padre
+class Users#Father class for the Admin and Buyer users
+  #at this point the "email" and the "password"
   attr_reader :email, :password
   def initialize(email=nil,password=nil)
     @email = email
     @password = password
   end
-  def add_user(email,password)
+  #to add ner user to CSV file
+  def add_user(email,password)#to parameters enter
+    #the CSV file is open with write capabilities
     CSV.open("users.csv","a+")do |line_csv|
+     #the email and password are added at the last line if the CSV file
       line_csv << [email,password]
     end
     #user_index
@@ -50,10 +63,13 @@ class Users#Clase padre
       all_users << line_csv
     end
     puts "# EMAIL PASSWORD"
+    #then an index is aded in the array
     all_users.each.with_index do |item, index|
+      #the index is put at the begining of the array and each element is turn into an string
       puts item.unshift( index+1 ).join " "
     end
   end
+  #method used to itereate in the index of user and find if the correct email is input, but not showing the index
   def user_index_no_visible
     all_users = []
     CSV.foreach("users.csv","a+")do |line_csv|
@@ -63,17 +79,17 @@ class Users#Clase padre
       item.unshift( index+1 )
     end
   end
-
-
 end
 #-------------------------
+#class of the admin user, inherate all his methods, but has  only one value to email and password
 class Admin < Users
     def initialize
       @email = "admin"
       @password = "123"
     end
 end
+#class for the buyer users, in wich the email and password are re-writable, and can't shown the index
 class Buyer < Admin
   attr_accessor :email, :password
-  private :user_index
+  private :user_index ,:user_index_no_visible
 end

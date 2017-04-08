@@ -12,8 +12,8 @@ class View
       when 4 then puts "Unknown email, try again,  or enter \"back\" to return one step forward"
       when 5 then puts "rong password, try again, or enter \"back\" to return one step forward"
       when 6 then puts "Welcome Administrador. Your type is Admin."
-      #when 7 then puts "Welcome User."
-      #when 8 then puts "Select option number:\n1. Logout\n2. Products index\n"
+      # when 7 then puts "Welcome User."
+      # when 8 then puts "Select option number:\n1. Logout\n2. Products index\n"
     end
   end
   def reg_view(input)
@@ -32,9 +32,11 @@ class View
   end
   def buyer_view(input_buyer)
     case input_buyer
-      when 1 then puts "Welcome User. Select option number:\n1. Logout\n2. Products index"
-
+      when 1 then puts "Welcome User. Select option number:\n1. Logout\n2. Products index"      
     end
 
+  end
+  def goodBye
+    puts "See ya"
   end
 end

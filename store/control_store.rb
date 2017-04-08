@@ -12,11 +12,12 @@ class Store
     @input = gets.chomp # selec the menu option
     menu(@input)#the menu method is invoked
   end
+  #metho to select options
   def menu(input)
     case input.to_i
-      when 1 then login
-      when 2 then register
-      when 3 then puts "See ya"
+    when 1 then login #invoke login method
+    when 2 then register#invoke Register method
+    when 3 then @view.goodBye#invoke goodBye method
     end
   end
   #invoke login menu and options
@@ -42,22 +43,22 @@ class Store
               log = :true_admin #symbol that end the loop "until"
               menu_admin# method of menu of the administrator is invoked
             end
-          when log == "menu"
+          when log == "menu"#WHEN the user input's "menu" the menu(input) method's invoke∫
           @view.welcoming
           @input = gets.chomp
           menu(@input)
         else
-          p "else"
+          #p "else"
           all_users = @admin.user_index_no_visible
           all_users.each do |user_data|
-            if user_data[1] == log#SI el email del arreglo == al input
-              @view.log_view(7) #welcomin user
-              @view.log_view(3)
-              until user_data[2] == log
+            if user_data[1] == log#SI un email del "user.csv" == al input
+              @view.log_view(3) #  welcomin user
+              until user_data[2] == log#LOOP until the input is equal to password of the  "user.csv"
                 log = gets.chomp
-                break if log == "back"
-                @view.log_view(5) if user_data[2] != log# IF the password is rong
+                break if log == "back"#IF the input is "back" string, the loop is break
+                @view.log_view(5) if user_data[2] != log# IF the password is rong ask for the password again
               end
+              #IF the input is not "back" and the password is OK then the loop is end it, say hi to the user and  "menu_buyer" is invoke
               if log != "back" && log == user_data[2]
                 log = :true_user
                 @view.buyer_view(1)
@@ -69,60 +70,67 @@ class Store
     end#end of until
     #$log_result = log #log can be :true_user or :true_admin
   end#end of login method
+  #method for add more user to the CSV file
   def register
-    @view.reg_view(1)
+    @view.reg_view(1)# aks to the user to input email
     @buyer.email = gets.chomp
-    @view.reg_view(2)
+    @view.reg_view(2)#ask the user to input password
     @buyer.password = gets.chomp
+    #A buyer objetc is created and add_user method applied to it, two parameters ar inserted: email and password
     @buyer.add_user(@buyer.email,@buyer.password)
-    @view.reg_view(3)
+    @view.reg_view(3)#puts "user added"
   end
+  #MENU for the administrator
   def menu_admin
-    counter_welcoming = 0
-    @view.admin_view(0) if counter_welcoming <=1
-    input_admin = gets.to_i
+    @view.admin_view(0)#say hi to the admin and show his options
+    input_admin = gets.to_i #input is turn into an integer
     case input_admin
+      #option to logout
       when 1
-        counter_welcoming +=1
         @view.welcoming
         @input = gets.chomp
-        menu(@input)
+        menu(@input)#the initial menu is shown
+      #option product index
       when 2
-        counter_welcoming +=1
         @view.admin_view(2)#productu index
         @product.product_index#to the Obj Product is
         puts "pres any key to continue"
         gets.chomp
-        menu_admin
+        menu_admin#
       when 3
-        counter_welcoming +=1
         @product.create_product(@product)#create product
         puts "pres any key to continue"
         gets.chomp
         menu_admin
       when 4
-        counter_welcoming +=1
         @admin.user_index#user index
         puts "pres any key to continue"
         gets.chomp
-        menu_admin
+        menu_admin#using recursion the munu method call himself
     end
   end
+  #menu from a buyer user
   def menu_buyer
-    @view.buyer_view(1)
+    @view.buyer_view(1)#say hi to buyer ans options are shown
     input_buyer = gets.to_i
     case input_buyer
-    when 1
-      @view.welcoming
-      input = gets.chomp
-      menu(input)
-    when 2
-      @product.product_index
-      puts "press any key to continue"
-      gets
-      menu_buyer
+      #go to the intial menu
+      when 1
+        @view.welcoming
+        input = gets.chomp
+        menu(input)
+      #menu of products are shown
+      when 2
+        @product.product_index
+        puts "press any key to continue"
+        gets
+        menu_buyer
     end
   end
 
 end
 Store.new
+#FALTA
+#agregar user vededor, que puede agregar products
+#que el comprador pueda comprar
+#que el admin pueda borrar users y products
