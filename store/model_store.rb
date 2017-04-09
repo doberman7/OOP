@@ -39,6 +39,24 @@ class Product
       puts item.unshift( index+1 ).join "     "
     end
   end
+  #return the selected_input or "not founded"
+  def select_article
+    selected_input = gets.to_i
+    selected = nil
+    all_products = []
+    CSV.foreach("products.csv","a+")do |line_csv|
+     #each line of the csv file is push it in the array
+      all_products << line_csv
+    end
+    #then to all_products a index is added
+    all_products.each.with_index do |item, index|
+      #each index is put at the begining at the item, an turn into a string
+      item.unshift(index+1)
+      selected = item if selected_input == index + 1
+    end
+    selected = "that number of item doesnt exist" if selected_input > all_products.length
+    selected
+  end
 end
 #---------------------------
 class Users#Father class for the Admin and Buyer users

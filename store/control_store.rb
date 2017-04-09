@@ -8,9 +8,10 @@ class Store
     @admin = Admin.new
     @buyer = Buyer.new
     @view = View.new
-    @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
-    @input = gets.chomp # selec the menu option
-    menu(@input)#the menu method is invoked
+    # @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
+    # @input = gets.chomp # selec the menu option
+    # menu(@input)#the menu method is invoked
+    sell
   end
   #metho to select options
   def menu(input)
@@ -110,6 +111,19 @@ class Store
     end
   end
   #menu from a buyer user
+  def sell
+    input_sell = "n"
+    selected = nil
+    while input_sell == "n" || input_sell == "N"
+      puts "selec article number"
+      selected = @product.select_article
+      puts "select quantity"
+      quantity = gets.to_i
+      puts "your request is: \n#{quantity} #{selected[3]}\'s\n is that ok?\n enter \"n\" if you want to try again or push any key to continue with the operation"
+      input_sell = gets.chomp
+    end#aqui
+  end
+
   def menu_buyer
     @view.buyer_view(1)#say hi to buyer ans options are shown
     input_buyer = gets.to_i
@@ -122,10 +136,9 @@ class Store
       #menu of products are shown
       when 2
         @product.product_index
-        puts "press any key to continue"
-        gets
-        menu_buyer
+        sell
     end
+
   end
 
 end
