@@ -55,8 +55,23 @@ class Product
       selected = item if selected_input == index + 1
     end
     selected = "that number of item doesnt exist" if selected_input > all_products.length
+    #delete money sign of price
+    selected[2] = selected[2].delete "$"
+    #turno price and quangtity into a strings
+    selected[2] = selected[2].to_i
+    selected[1] = selected[1].to_i
     selected
   end
+  def arrange_inventory(product, newQuantity)
+    #the CSV file is open with write capabilities
+    CSV.open("products.csv","AQUI")do |line_csv|
+      #the three instance varibles are put in a line of the csv file
+      line_csv << [product.quantity, product.cost, product.name]
+    end
+    #to finish the index of product are shown with the new item included
+    product_index
+  end
+
 end
 #---------------------------
 class Users#Father class for the Admin and Buyer users

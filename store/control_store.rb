@@ -11,6 +11,7 @@ class Store
     # @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
     # @input = gets.chomp # selec the menu option
     # menu(@input)#the menu method is invoked
+    @product.product_index
     sell
   end
   #metho to select options
@@ -110,19 +111,36 @@ class Store
         menu_admin#using recursion the munu method call himself
     end
   end
+
   #menu from a buyer user
   def sell
-    input_sell = "n"
+    input_sell = "r"
     selected = nil
-    while input_sell == "n" || input_sell == "N"
+    quantity = nil
+    while input_sell == "r" || input_sell == "R"
       puts "selec article number"
       selected = @product.select_article
+      puts "#{selected[3]} has been selected"
       puts "select quantity"
-      quantity = gets.to_i
-      puts "your request is: \n#{quantity} #{selected[3]}\'s\n is that ok?\n enter \"n\" if you want to try again or push any key to continue with the operation"
+      quantity = gets.chomp.to_i
+      while quantity > selected[1] || quantity <= 0
+        puts "chooose a number between 1 and #{selected[1]}" if quantity <= 0
+        puts "not enough in stock, tray again" if quantity > selected[1]
+        quantity = gets.chomp.to_i
+      end
+      mount_to_pay = total_of_same_product_count(quantity,selected[2])
+      puts "your request is: \n#{quantity} units of: #{selected[3]}, that would be #{mount_to_pay}"
+      puts "enter \"r\" if you want to try again or push any key to continue with the operation"
       input_sell = gets.chomp
-    end#aqui
+    end
+    #AQUI agregar metodoque  arregle el inventario
   end
+
+  def total_of_same_product_count(quantity, cost)
+    total_of_same_product = quantity * cost
+    total_of_same_product
+  end
+
 
   def menu_buyer
     @view.buyer_view(1)#say hi to buyer ans options are shown
