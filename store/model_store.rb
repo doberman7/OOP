@@ -39,7 +39,7 @@ class Product
       puts item.unshift( index+1 ).join "     "
     end
   end
-  #return the selected_input or "not founded"
+  #return the selected_input or "not founded in CSV file"
   def select_article
     selected_input = gets.to_i
     selected = nil
@@ -62,14 +62,21 @@ class Product
     selected[1] = selected[1].to_i
     selected
   end
-  def arrange_inventory(product, newQuantity)
-    #the CSV file is open with write capabilities
-    CSV.open("products.csv","AQUI")do |line_csv|
-      #the three instance varibles are put in a line of the csv file
-      line_csv << [product.quantity, product.cost, product.name]
+  def arrange_inventory(product, products_taken)
+    all_products = []
+    CSV.foreach("products.csv","a+")do |line_csv|
+     #each line of the csv file is push it in the array
+       all_products << line_csv
     end
-    #to finish the index of product are shown with the new item included
-    product_index
+    #p all_products
+    CSV.open("products.csv","w+")do |line_csv|
+      all_products.each do |product_in_storage|
+        if product_in_storage[2]==product
+          product_in_storage[0] = product_in_storage[0].to_i - products_taken
+        end
+         line_csv << [product_in_storage[0],product_in_storage[1],product_in_storage[2]]
+      end
+    end
   end
 
 end

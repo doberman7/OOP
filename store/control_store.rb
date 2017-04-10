@@ -11,7 +11,7 @@ class Store
     # @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
     # @input = gets.chomp # selec the menu option
     # menu(@input)#the menu method is invoked
-    @product.product_index
+
     sell
   end
   #metho to select options
@@ -111,29 +111,69 @@ class Store
         menu_admin#using recursion the munu method call himself
     end
   end
-
+  def select_article(all_products)
+    selected = nil
+    puts "selec article number"
+    selected_input = gets.to_i
+    while selected_input > all_products.length
+      puts "that item doesnt exist"
+      selected_input = gets.to_i
+    end
+    all_products.each do |product|
+      selected = product if product[0] == selected_input
+    end
+    # #delete money sign of price
+    selected[2] = selected[2].delete "$"
+    #turn price and quangtity into a strings
+    selected[2] = selected[2].to_i
+    selected[1] = selected[1].to_i
+    #WHILE there is no product in the inventory
+    while selected[1] == 0
+      puts "select an other one, to have exitance on inventory"
+      selected = @product.select_article
+    end
+    #the product selected is shown
+    puts "#{selected[3]} has been selected"
+    selected
+  end
   #menu from a buyer user
   def sell
+    all_products = @product.product_index
     input_sell = "r"
     selected = nil
     quantity = nil
+    buy_cart = []
+    #WHILE for the opction to selecte other kind of product and quantity
     while input_sell == "r" || input_sell == "R"
-      puts "selec article number"
-      selected = @product.select_article
-      puts "#{selected[3]} has been selected"
+      selected = select_article(all_products)
+      #AQUI vamos
       puts "select quantity"
+      #the quantity is obtain
       quantity = gets.chomp.to_i
+      #WHILE the input is greater than the exitance in inventory, a new input is required
       while quantity > selected[1] || quantity <= 0
         puts "chooose a number between 1 and #{selected[1]}" if quantity <= 0
         puts "not enough in stock, tray again" if quantity > selected[1]
         quantity = gets.chomp.to_i
       end
+      #the amount to pay is show for the quantity of products
       mount_to_pay = total_of_same_product_count(quantity,selected[2])
       puts "your request is: \n#{quantity} units of: #{selected[3]}, that would be #{mount_to_pay}"
-      puts "enter \"r\" if you want to try again or push any key to continue with the operation"
+      puts "enter \"r\" if you want to re-initiate your buy, write  \"add \" for add more articles in the buy-cart or push any key to continue with the operation"
+      #input_buyer determines if the loop for selecting product is re-initiated
       input_sell = gets.chomp
+      while input_sell == "add"
+        @product.product_index
+        buy_cart << [quantity,mount_to_pay,selected[3]]
+        p buy_cart
+        sell
+      end
     end
-    #AQUI agregar metodoque  arregle el inventario
+
+    #then the quantity of products in inventory is re-arrange
+    @product.arrange_inventory(selected[3],quantity)
+    puts "Thank's for your buy"
+    #FALTA agregar mecanica agregar productos en carrito
   end
 
   def total_of_same_product_count(quantity, cost)
