@@ -145,6 +145,7 @@ class Store
     selected = nil
     quantity = nil
     buy_cart = []
+    total = 0
     #WHILE for the opction to selecte other kind of product and quantity
     while input_sell == "r" || input_sell == "R" || input_sell == "add"||input_sell == "ADD"
       selected = select_article(all_products)
@@ -161,8 +162,8 @@ class Store
       end
       #the amount to pay is show for the quantity of products
       mount_to_pay = total_of_same_product_count(quantity,selected[2])
-      puts "your request is: \n#{quantity} units of: #{selected[3]}, that would be $#{mount_to_pay}"
-      puts " -enter \"r\" if you want to re-initiate your buy \n -write  \"add \" for add more articles in the buy-cart \n -push any key to continue with the operation"
+      puts "your request is: \n#{quantity} units of #{selected[3]}, that would be $#{mount_to_pay} enter:"
+      puts " -\"r\" if you want to re-initiate your buy \n -\"add \" for add more articles in the buy-cart \n -any key to continue with the operation"
       #input_buyer determines if the loop for selecting product is re-initiated
       input_sell = gets.chomp
       buy_cart << [quantity,mount_to_pay,selected[3]] if input_sell == "add" || input_sell == "ADD" || input_sell != "r" || input_sell != "R" || input_sell == "\n"
@@ -170,7 +171,9 @@ class Store
     puts "your buy car includes:"
     buy_cart.each do |product_in_cart|
       puts "-#{product_in_cart[0]} units of #{product_in_cart[2]} for $#{product_in_cart[1]} "
+      total = total + product_in_cart[1].to_i
     end
+    puts "thar would be a total of #{total}"
     input_sell = nil
     puts "if its that correct enter \"ok\" \nif you wana try again type \"no\""
     input_sell = gets.chomp

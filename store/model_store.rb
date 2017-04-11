@@ -66,12 +66,12 @@ class Product
   def arrange_inventory(buy_cart)
     #buy_cart is: [quantity,cost,name] of varios products
     #all_products is: [quantity, price, name] of varios products
-    p "entro "
     all_products = []
     CSV.foreach("products.csv","a+")do |line_csv|
      #each line of the csv file is push it in the array
        all_products << line_csv
     end
+    #extract the product in the cart to the array that copy the CSV file
     all_products.each do |product_in_storage|
       buy_cart.each do |product_in_cart|
         if product_in_storage[2] == product_in_cart[2]
@@ -79,12 +79,12 @@ class Product
         end
       end
     end
-    p all_products
-    # CSV.open("products.csv","w+")do |line_csv|
-    #
-    # end
+    CSV.open("products.csv","w+")do |line_csv|
+      all_products.each do |product_in_storage|
+        line_csv << product_in_storage
+      end
+    end
   end
-
 end
 #---------------------------
 class Users#Father class for the Admin and Buyer users
