@@ -36,6 +36,7 @@ class Product
     #then to all_products a index is added
     all_products.each.with_index do |item, index|
       #each index is put at the begining at the item, an turn into a string
+
       puts item.unshift( index+1 ).join "     "
     end
   end
@@ -62,21 +63,26 @@ class Product
     selected[1] = selected[1].to_i
     selected
   end
-  def arrange_inventory(product, products_taken)
+  def arrange_inventory(buy_cart)
+    #buy_cart is: [quantity,cost,name] of varios products
+    #all_products is: [quantity, price, name] of varios products
+    p "entro "
     all_products = []
     CSV.foreach("products.csv","a+")do |line_csv|
      #each line of the csv file is push it in the array
        all_products << line_csv
     end
-    #p all_products
-    CSV.open("products.csv","w+")do |line_csv|
-      all_products.each do |product_in_storage|
-        if product_in_storage[2]==product
-          product_in_storage[0] = product_in_storage[0].to_i - products_taken
+    all_products.each do |product_in_storage|
+      buy_cart.each do |product_in_cart|
+        if product_in_storage[2] == product_in_cart[2]
+          product_in_storage[0] = product_in_storage[0].to_i - product_in_cart[0].to_i
         end
-         line_csv << [product_in_storage[0],product_in_storage[1],product_in_storage[2]]
       end
     end
+    p all_products
+    # CSV.open("products.csv","w+")do |line_csv|
+    #
+    # end
   end
 
 end

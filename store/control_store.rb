@@ -1,6 +1,6 @@
 require_relative "model_store"#requerir modelo de la tienda, donde se encuetran las clases y los metodos
 require_relative "view_store"#requerir Vistas de la tienda
-
+$bur_cart = []
 class Store
   #the instance variables of the objetc Store are objets too
   def initialize
@@ -122,9 +122,10 @@ class Store
     all_products.each do |product|
       selected = product if product[0] == selected_input
     end
+
     # #delete money sign of price
     selected[2] = selected[2].delete "$"
-    #turn price and quangtity into a strings
+    #turn price and quangtity into a integers
     selected[2] = selected[2].to_i
     selected[1] = selected[1].to_i
     #WHILE there is no product in the inventory
@@ -134,6 +135,7 @@ class Store
     end
     #the product selected is shown
     puts "#{selected[3]} has been selected"
+    puts "there is #{selected[1]} in existance"
     selected
   end
   #menu from a buyer user
@@ -144,8 +146,9 @@ class Store
     quantity = nil
     buy_cart = []
     #WHILE for the opction to selecte other kind of product and quantity
-    while input_sell == "r" || input_sell == "R"
+    while input_sell == "r" || input_sell == "R" || input_sell == "add"||input_sell == "ADD"
       selected = select_article(all_products)
+      #PROBLEMA CON SELECTED
       #AQUI vamos
       puts "select quantity"
       #the quantity is obtain
@@ -158,29 +161,35 @@ class Store
       end
       #the amount to pay is show for the quantity of products
       mount_to_pay = total_of_same_product_count(quantity,selected[2])
-      puts "your request is: \n#{quantity} units of: #{selected[3]}, that would be #{mount_to_pay}"
-      puts "enter \"r\" if you want to re-initiate your buy, write  \"add \" for add more articles in the buy-cart or push any key to continue with the operation"
+      puts "your request is: \n#{quantity} units of: #{selected[3]}, that would be $#{mount_to_pay}"
+      puts " -enter \"r\" if you want to re-initiate your buy \n -write  \"add \" for add more articles in the buy-cart \n -push any key to continue with the operation"
       #input_buyer determines if the loop for selecting product is re-initiated
       input_sell = gets.chomp
-      while input_sell == "add"
-        @product.product_index
-        buy_cart << [quantity,mount_to_pay,selected[3]]
-        p buy_cart
+      buy_cart << [quantity,mount_to_pay,selected[3]] if input_sell == "add" || input_sell == "ADD" || input_sell != "r" || input_sell != "R" || input_sell == "\n"
+    end
+    puts "your buy car includes:"
+    buy_cart.each do |product_in_cart|
+      puts "-#{product_in_cart[0]} units of #{product_in_cart[2]} for $#{product_in_cart[1]} "
+    end
+    input_sell = nil
+    puts "if its that correct enter \"ok\" \nif you wana try again type \"no\""
+    input_sell = gets.chomp
+    case input_sell
+      #WHEN inputu is  "no" the sell star's again
+      when "no"
         sell
-      end
+      #WHEN "ok" then the quantity of products in inventory is re-arrange
+      when "ok"
+        @product.arrange_inventory(buy_cart)
+        puts "Thank's for your buy"
     end
 
-    #then the quantity of products in inventory is re-arrange
-    @product.arrange_inventory(selected[3],quantity)
-    puts "Thank's for your buy"
-    #FALTA agregar mecanica agregar productos en carrito
   end
 
   def total_of_same_product_count(quantity, cost)
     total_of_same_product = quantity * cost
     total_of_same_product
   end
-
 
   def menu_buyer
     @view.buyer_view(1)#say hi to buyer ans options are shown
