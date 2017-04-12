@@ -8,11 +8,9 @@ class Store
     @admin = Admin.new
     @buyer = Buyer.new
     @view = View.new
-    # @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
-    # @input = gets.chomp # selec the menu option
-    # menu(@input)#the menu method is invoked
+    display_welcoming_and_menu
 
-    sell
+    #sell
   end
   #metho to select options
   def menu(input)
@@ -81,6 +79,12 @@ class Store
     #A buyer objetc is created and add_user method applied to it, two parameters ar inserted: email and password
     @buyer.add_user(@buyer.email,@buyer.password)
     @view.reg_view(3)#puts "user added"
+    display_welcoming_and_menu
+  end
+  def display_welcoming_and_menu
+    @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
+    @input = gets.chomp # selec the menu option
+    menu(@input)#the menu method is invoked
   end
   #MENU for the administrator
   def menu_admin
@@ -205,7 +209,7 @@ class Store
         menu(input)
       #menu of products are shown
       when 2
-        @product.product_index
+        #@product.product_index
         sell
     end
 
