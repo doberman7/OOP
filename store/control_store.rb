@@ -1,6 +1,6 @@
 require_relative "model_store"#requerir modelo de la tienda, donde se encuetran las clases y los metodos
 require_relative "view_store"#requerir Vistas de la tienda
-$bur_cart = []
+
 class Store
   #the instance variables of the objetc Store are objets too
   def initialize
@@ -10,7 +10,11 @@ class Store
     @view = View.new
     display_welcoming_and_menu
 
-    #sell
+  end
+  def display_welcoming_and_menu
+    @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
+    @input = gets.chomp # selec the menu option
+    menu(@input)#the menu method is invoked
   end
   #metho to select options
   def menu(input)
@@ -81,11 +85,7 @@ class Store
     @view.reg_view(3)#puts "user added"
     display_welcoming_and_menu
   end
-  def display_welcoming_and_menu
-    @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
-    @input = gets.chomp # selec the menu option
-    menu(@input)#the menu method is invoked
-  end
+
   #MENU for the administrator
   def menu_admin
     @view.admin_view(0)#say hi to the admin and show his options
@@ -113,6 +113,24 @@ class Store
         puts "pres any key to continue"
         gets.chomp
         menu_admin#using recursion the munu method call himself
+      when 5
+        @admin.user_index#user index
+        puts "select user to delete"
+        delete_user
+    end
+  end
+  def delete_user
+    @admin.user_index
+    @view.admin_deletin_message(1)
+    @admin.deleter_of_users(user=gets.chomp)
+    @view.admin_deletin_message(2)
+    @admin.user_index
+    @view.admin_deletin_message(3)
+    input = gets.chomp
+    if input == "y" || input == "Y"
+      delete_user
+    else
+      menu_admin
     end
   end
   def select_article(all_products)
@@ -188,7 +206,7 @@ class Store
       #WHEN "ok" then the quantity of products in inventory is re-arrange
       when "ok"
         @product.arrange_inventory(buy_cart)
-        puts "Thank's for your buy"
+        @view.thanks(1)
     end
 
   end
@@ -219,5 +237,5 @@ end
 Store.new
 #FALTA
 #agregar user vededor, que puede agregar products
-#que el comprador pueda comprar
+
 #que el admin pueda borrar users y products

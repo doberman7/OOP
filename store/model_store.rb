@@ -125,6 +125,20 @@ class Users#Father class for the Admin and Buyer users
       item.unshift( index+1 )
     end
   end
+  def deleter_of_users(user)
+    #user_to_delete = gets.chomp
+    all_users = []
+    CSV.foreach("users.csv","a+")do |line_csv|
+     #each line of the csv file is push it in the array
+       all_users << line_csv
+    end
+    CSV.open("users.csv","w+")do |line_csv|
+      all_users.each.with_index do |user_in_csv, index|
+        #IF the input containing the user is diferent the user is re_writen in the CSV file
+        line_csv << user_in_csv if index+1 != user.to_i
+      end
+    end
+  end
 end
 #-------------------------
 #class of the admin user, inherate all his methods, but has  only one value to email and password
