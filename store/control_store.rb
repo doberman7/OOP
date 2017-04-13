@@ -8,12 +8,13 @@ class Store
     @admin = Admin.new
     @buyer = Buyer.new
     @view = View.new
-    display_welcoming_and_menu    
+    #display_welcoming_and_menu
+    sell
   end
   def display_welcoming_and_menu
     @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
-    @input = gets.chomp # selec the menu option
-    menu(@input)#the menu method is invoked
+    input = gets.chomp # selec the menu option
+    menu(input)#the menu method is invoked
   end
   #metho to select options
   def menu(input)
@@ -136,6 +137,7 @@ class Store
   end
   def select_article(all_products)
     selected = nil
+
     puts "selec article number"
     selected_input = gets.to_i
     while selected_input > all_products.length
@@ -146,10 +148,10 @@ class Store
       selected = product if product[0] == selected_input
     end
 
-    # #delete money sign of price
-    selected[2] = selected[2].delete "$"
+    # IF price is not already a integer,delete money sign of price, it is necesary because if the user add another product to the buy_cart the iteration start's again but with this values been an integer, in wich  case .delete method would be throw an error because .delete is a string Method, not a Fixnum method
+    selected[2] = selected[2].delete "$" if selected[2].class != Fixnum
     #turn price and quangtity into a integers
-    selected[2] = selected[2].to_i
+    selected[2] = selected[2].to_i #if selected[2].class != Fixnum
     selected[1] = selected[1].to_i
     #WHILE there is no product in the inventory
     while selected[1] == 0
@@ -163,7 +165,8 @@ class Store
   end
   #menu from a buyer user
   def sell
-    all_products = @product.product_index
+    @product.product_index
+    all_products = @product.product_index_invisble
     input_sell = "r"
     selected = nil
     quantity = nil
@@ -172,8 +175,11 @@ class Store
     #WHILE for the opction to selecte other kind of product and quantity
     while input_sell == "r" || input_sell == "R" || input_sell == "add"||input_sell == "ADD"
       selected = select_article(all_products)
-      #PROBLEMA CON SELECTED
-      #AQUI vamos
+      #selected[0] # => consecutive
+      #selected[1] # => quantity
+      #selected[2] # => price
+      #selected[3] # => name
+      #CAUTION: if selected throws an error , watch for the line un select_article method in wixh is readed: "selected[2] = selected[2].delete "$" if selected[2].class != Fixnum" line
       puts "select quantity"
       #the quantity is obtain
       quantity = gets.chomp.to_i
@@ -183,10 +189,14 @@ class Store
         puts "not enough in stock, tray again" if quantity > selected[1]
         quantity = gets.chomp.to_i
       end
+      #p selected[2]# = selected[2] - quantity
       #the amount to pay is show for the quantity of products
       mount_to_pay = total_of_same_product_count(quantity,selected[2])
       puts "your request is: \n#{quantity} units of #{selected[3]}, that would be $#{mount_to_pay} enter:"
       puts " -\"r\" if you want to re-initiate your buy \n -\"add \" for add more articles in the buy-cart \n -any key to continue with the operation"
+      all_products.each do |product|
+        product[1] = product[1] - quantity if selected[0] == product[0]
+      end
       #input_buyer determines if the loop for selecting product is re-initiated
       input_sell = gets.chomp
       buy_cart << [quantity,mount_to_pay,selected[3]] if input_sell == "add" || input_sell == "ADD" || input_sell != "r" || input_sell != "R" || input_sell == "\n"
@@ -209,7 +219,7 @@ class Store
         @product.arrange_inventory(buy_cart)
         @view.thanks(1)
     end
-
+    menu_buyer
   end
 
   def total_of_same_product_count(quantity, cost)

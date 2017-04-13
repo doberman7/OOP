@@ -3,7 +3,7 @@
 34,$45,pato
 50,$12,piedra
 34,$90,cosa
-4,$90,mouse
-0,$90,bottle
-0,$20,PC
-900,$30,watch
+40,$90,mouse
+10,$90,bottle
+70,$20,PC
+100,$30,watch

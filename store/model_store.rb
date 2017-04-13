@@ -55,6 +55,17 @@ class Product
       puts caracteriztics.unshift( index+1 ).join"  "
     end
   end
+  def product_index_invisble
+    all_products = []
+    CSV.foreach("products.csv","a+")do |line_csv|
+     #each line of the csv file is push it in the array
+      all_products << line_csv
+    end
+    all_products.each.with_index do |item, index|
+      item.unshift( index+1 )
+    end
+    all_products
+  end
   #return the selected_input or "not founded in CSV file"
   def select_article
     selected_input = gets.to_i
@@ -102,7 +113,7 @@ class Product
   end
 end
 #---------------------------
-class Users#Father class for the Admin and Buyer users
+class SuperUser#Father class for the Admin and Buyer users
   #at this point the "email" and the "password"
   attr_reader :email, :password
   def initialize(email=nil,password=nil)
@@ -170,7 +181,7 @@ class Users#Father class for the Admin and Buyer users
 end
 #-------------------------
 #class of the admin user, inherate all his methods, but has  only one value to email and password
-class Admin < Users
+class Admin < SuperUser
     def initialize
       @email = "admin"
       @password = "123"
@@ -179,5 +190,8 @@ end
 #class for the buyer users, in wich the email and password are re-writable, and can't shown the index
 class Buyer < Admin
   attr_accessor :email, :password
-  private :user_index ,:user_index_no_visible
+  private :user_index ,:user_index_no_visible, :deleter_of_users
+end
+class Seller < SuperUser
+  private :user_index ,:user_index_no_visible, :deleter_of_users
 end
