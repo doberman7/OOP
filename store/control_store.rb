@@ -8,8 +8,7 @@ class Store
     @admin = Admin.new
     @buyer = Buyer.new
     @view = View.new
-    display_welcoming_and_menu
-
+    display_welcoming_and_menu    
   end
   def display_welcoming_and_menu
     @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
@@ -117,6 +116,7 @@ class Store
         @admin.user_index#user index
         puts "select user to delete"
         delete_user
+        @admin.user_index#user index
     end
   end
   def delete_user
@@ -124,6 +124,7 @@ class Store
     @view.admin_deletin_message(1)
     @admin.deleter_of_users(user=gets.chomp)
     @view.admin_deletin_message(2)
+    puts "the user number #{user} was deleted"
     @admin.user_index
     @view.admin_deletin_message(3)
     input = gets.chomp

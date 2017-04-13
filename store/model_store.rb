@@ -32,12 +32,27 @@ class Product
      #each line of the csv file is push it in the array
       all_products << line_csv
     end
-    puts "# Quantity  Cost  Name"
-    #then to all_products a index is added
-    all_products.each.with_index do |item, index|
-      #each index is put at the begining at the item, an turn into a string
 
-      puts item.unshift( index+1 ).join "     "
+    puts "# Quantity    Cost       Name"
+    #then to all_products a index is added
+
+    all_products.each.with_index do |item, index|
+      #print a line to divide each paragraph
+      puts "-----------------------------------"
+      #assign an array to put the item caracteriztics
+      caracteriztics = []
+      #analize each item call in it "c"
+      item.each do |c|
+        #add a space to "c" until "c" size is equal or greater than 9
+        until c.size >= 9
+          c << " "
+        end
+        #push c into the array "caracteriztics"
+        caracteriztics << c
+      end
+      #print the index at the begining of the paragraph with and space
+      #the "index+1" it's because the index star's at 0
+      puts caracteriztics.unshift( index+1 ).join"  "
     end
   end
   #return the selected_input or "not founded in CSV file"
@@ -108,11 +123,24 @@ class Users#Father class for the Admin and Buyer users
     CSV.foreach("users.csv","a+")do |line_csv|
       all_users << line_csv
     end
-    puts "# EMAIL PASSWORD"
+    puts "# EMAIL        PASSWORD"
     #then an index is aded in the array
     all_users.each.with_index do |item, index|
-      #the index is put at the begining of the array and each element is turn into an string
-      puts item.unshift( index+1 ).join " "
+      # a line to divide each paragraph
+      puts "-----------------------------"
+      #assign an array to put each caracteriztic of the user an printed later in the paragraph
+      user = []
+      #analize the item to add spaces betwen the caracteriztics
+      item.each do |usr|
+        #until the size of the string a.k.a. caracteriztic is equal or greater than 13 an space is added
+        until usr.size >=13
+          usr << " "
+        end
+        #the caracteriztic of the user us pushed in the "user array" with the spaces already added
+        user << usr
+      end
+      #print ech user array with a numeration at the begining
+      puts user.unshift( index+1 ).join " "
     end
   end
   #method used to itereate in the index of user and find if the correct email is input, but not showing the index
