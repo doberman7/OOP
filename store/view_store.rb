@@ -25,7 +25,7 @@ class View
   end
   def admin_view(input)
     case input
-    when 0 then puts "Welcome Administrador. Your type is Admin\nSelect option number:\n1. Logout\n2. Products index\n3. Create product\n4. Users index\n5. Delete user" #delete_user
+    when 0 then puts "Welcome Administrador. Your type is Admin\nSelect option number:\n1. Logout\n2. Products index\n3. Create product\n4. Users index\n5. Delete user\n6. Delete article" #delete_user
       when 1 then puts "get back soon"
       when 2 then puts "This're the products we have"
     end

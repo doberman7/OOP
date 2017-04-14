@@ -111,6 +111,20 @@ class Product
       end
     end
   end
+  def delete_article_in_csv(selected)
+    all_products = []
+    CSV.foreach("products.csv","a+") do |line_csv|
+      all_products << line_csv
+    end
+
+
+    CSV.open("products.csv","w+") do |line_csv|
+      all_products.each.with_index do |product, index|
+        #puts "#{selected[0]} != #{index + 1}"
+        line_csv << product unless selected[0] == index + 1
+      end
+    end
+  end
 end
 #---------------------------
 class SuperUser#Father class for the Admin and Buyer users

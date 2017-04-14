@@ -9,7 +9,7 @@ class Store
     @buyer = Buyer.new
     @view = View.new
     #display_welcoming_and_menu
-    sell
+    menu_admin
   end
   def display_welcoming_and_menu
     @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
@@ -52,7 +52,6 @@ class Store
           @input = gets.chomp
           menu(@input)
         else
-          #p "else"
           all_users = @admin.user_index_no_visible
           all_users.each do |user_data|
             if user_data[1] == log#SI un email del "user.csv" == al input
@@ -114,11 +113,23 @@ class Store
         gets.chomp
         menu_admin#using recursion the munu method call himself
       when 5
-        @admin.user_index#user index
         puts "select user to delete"
         delete_user
         @admin.user_index#user index
+        menu_admin
+      when 6
+        delete_article
+        puts "the article now looks like this"
+        @product.product_index
+        puts "push any key to continue"
+        gets
+        menu_admin
     end
+  end
+  def delete_article
+    @product.product_index
+    selected = select_article_to_delete(@product.product_index_invisble)
+    @product.delete_article_in_csv(selected)
   end
   def delete_user
     @admin.user_index
@@ -135,10 +146,34 @@ class Store
       menu_admin
     end
   end
+  #this method let you select any article, even with 0 existance
+  def select_article_to_delete(all_products)
+    selected = nil
+    puts "select article number"
+    selected_input = gets.to_i
+    while selected_input > all_products.length
+      puts "that item doesnt exist"
+      selected_input = gets.to_i
+    end
+    all_products.each do |product|
+      selected = product if product[0] == selected_input
+    end
+
+    # IF price is not already a integer,delete money sign of price, it is necesary because if the user add another product to the buy_cart the iteration start's again but with this values been an integer, in wich  case .delete method would be throw an error because .delete is a string Method, not a Fixnum method
+    selected[2] = selected[2].delete "$" if selected[2].class != Fixnum
+    #turn price and quangtity into a integers
+    selected[2] = selected[2].to_i #if selected[2].class != Fixnum
+    selected[1] = selected[1].to_i
+
+    #the product selected is shown
+    puts "#{selected[3]} has been selected"
+    #puts "there is #{selected[1]} in existance"
+    selected
+  end
+  #this doesnt let select an article with 0 existance
   def select_article(all_products)
     selected = nil
-
-    puts "selec article number"
+    puts "select article number"
     selected_input = gets.to_i
     while selected_input > all_products.length
       puts "that item doesnt exist"
@@ -160,7 +195,7 @@ class Store
     end
     #the product selected is shown
     puts "#{selected[3]} has been selected"
-    puts "there is #{selected[1]} in existance"
+    #puts "there is #{selected[1]} in existance"
     selected
   end
   #menu from a buyer user
@@ -236,9 +271,8 @@ class Store
         @view.welcoming
         input = gets.chomp
         menu(input)
-      #menu of products are shown
+        #sell method is involated
       when 2
-        #@product.product_index
         sell
     end
 
@@ -248,5 +282,4 @@ end
 Store.new
 #FALTA
 #agregar user vededor, que puede agregar products
-
 #que el admin pueda borrar users y products
