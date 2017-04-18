@@ -8,8 +8,8 @@ class Store
     @admin = Admin.new
     @buyer = Buyer.new
     @view = View.new
-    #display_welcoming_and_menu
-    menu_admin
+    display_welcoming_and_menu
+    #menu_admin
   end
   def display_welcoming_and_menu
     @view.welcoming # we show the welcoming and menu options, in the future this could be changeed inside the method
