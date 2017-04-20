@@ -15,4 +15,9 @@ class View
 	def veredict(correct,rong)
 		puts "Tuviste #{correct} correctas y #{rong} malas"
 	end
+	def select_deck
+		puts "selecciona deck:\n-1. De respuesta unica\n-2. Opcion multiple  "
+		selected = gets.chomp
+		selected
+	end
 end
