@@ -8,9 +8,9 @@ class Controler
     @item = Item.new
     @deck = Deck.new
     @view = View.new
-    #@view.welcoming
-    #selection
+    @view.welcoming
     move_through_the_questions(selection)
+    try_again?
   end
 
   def selection
@@ -28,22 +28,27 @@ class Controler
     end
   end
   def question_deck_multiple_answer
-    #aqui
+
     item_n = 0
     correct = 0
     rong = 0
     item = get_items(item_n)
+    index_correct_answer=nil
     until item == nil
       item = get_items(item_n)
       break if item == nil
       @view.show(item.question)
-      multiple_resp_option(item.answer).each do |option|
-        p option
+      multiple_resp_option(item.answer).each.with_index do |option, index|
+        index_and_option = "#{index+1}.- #{option}"
+        @view.show(index_and_option)
+         index_correct_answer = index+1 if option == item.answer
       end
-      user_resp=@view.user_input
-
-      multiple_resp_option(item.answer).each.with_index do |option,index|
-        p index if item==item.answer
+      if index_correct_answer == @view.user_input.to_i
+        @view.rigth_or_rong(true)
+        correct += 1
+      else
+        @view.rigth_or_rong(false) ;
+        rong += 1
       end
       item_n += 1
     end
@@ -69,9 +74,12 @@ class Controler
     end
     @view.veredict(correct,rong)
   end
-
   def get_items(n)
     @item.get_it(n)
+  end
+  def try_again?
+    @view.ask
+    move_through_the_questions(selection) if @view.user_input=="s"
   end
 
 end

@@ -20,4 +20,7 @@ class View
 		selected = gets.chomp
 		selected
 	end
+	def ask
+		puts "Va de nuez? o prefieres huir\npresiona:\n-\"s\" para volver a empezar \n-cualquier otra tecla para salir"
+	end
 end
