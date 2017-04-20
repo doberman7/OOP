@@ -1,6 +1,7 @@
 require_relative "model_maraton"
 require_relative "view_maraton"
 require 'faker'
+require 'ffaker'
 
 class Controler
   def initialize
@@ -17,14 +18,17 @@ class Controler
     @item.file_selector(deck_selected)
   end
   def multiple_resp_option(answer)
-    ary = [answer,Faker::ChuckNorris.fact,Faker::File.extension,Faker::Job.field]
+    ary = [answer,Faker::Name.name ,FFaker::Airline.flight_number ,FFaker::Food.fruit ]
     ary.shuffle!
-     @view.show("1 "+ary[0])
-     @view.show("2 "+ary[1])
-     @view.show("3 "+ary[2])
-     @view.show("4 "+ary[3])
   end
   def move_through_the_questions(type_of_deck)
+    case type_of_deck
+      when "pregs.csv" then question_deck_single_answer
+      when "multiple_opt.csv" then question_deck_multiple_answer
+    end
+  end
+  def question_deck_multiple_answer
+    #aqui
     item_n = 0
     correct = 0
     rong = 0
@@ -33,7 +37,27 @@ class Controler
       item = get_items(item_n)
       break if item == nil
       @view.show(item.question)
-      multiple_resp_option(item.answer) if type_of_deck == "multiple_opt.csv"
+      multiple_resp_option(item.answer).each do |option|
+        p option
+      end
+      user_resp=@view.user_input
+
+      multiple_resp_option(item.answer).each.with_index do |option,index|
+        p index if item==item.answer
+      end
+      item_n += 1
+    end
+    @view.veredict(correct,rong)
+  end
+  def question_deck_single_answer
+    item_n = 0
+    correct = 0
+    rong = 0
+    item = get_items(item_n)
+    until item == nil
+      item = get_items(item_n)
+      break if item == nil
+      @view.show(item.question)
       if item.answer == @view.user_input
         @view.rigth_or_rong(true)
         correct += 1
