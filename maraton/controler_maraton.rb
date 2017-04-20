@@ -18,7 +18,7 @@ class Controler
   end
   def multiple_resp_option(answer)
     ary = [answer,Faker::ChuckNorris.fact,Faker::File.extension,Faker::Job.field]
-    ary.shuffle!    
+    ary.shuffle!
      @view.show("1 "+ary[0])
      @view.show("2 "+ary[1])
      @view.show("3 "+ary[2])
