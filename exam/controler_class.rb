@@ -3,10 +3,11 @@ require_relative 'view_class.rb'
 class Controler
 	def initialize
 		@adm_obj = Administrator.new
-		p bring_cards
+		@view_obj = View.new
+		@view_obj.separe(bring_cards)
 	end
 	def bring_cards
-		p @adm_obj.get_cards
+		@adm_obj.get_cards
 	end
 end
 Controler.new
