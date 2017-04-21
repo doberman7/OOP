@@ -14,9 +14,12 @@ class View
 			until card.cvc.size >= 6
 				card.cvc << " "
 			end
-			 puts "#{card.name}|#{card.number}|#{card.expiration}	|#{card.cvc}|#{card.status}"
-			 puts "----------------------------------------------------------" if index == 0
+
+
+			puts "#{card.name}|#{card.number}|#{card.expiration}	|#{card.cvc}|#{card.status[0]}, #{card.status[1]}, #{card.status[2]}, #{card.status[3]}, #{card.status[4]}"
+			puts "----------------------------------------------------------" if index == 0
 		end
+
 	end
 
 	def test(cards)
