@@ -1,10 +1,8 @@
-require "faker"
-
 #RaceCar class
 class RaceCar
   LAP_DISTANCE = 100
   LAP_TIME = 5
-  attr_reader :speed, :name, :time, :speeds, :times
+  attr_reader :speed, :name, :time, :average_s, :level
   def initialize(name)
     @name = name
     @speed = 0
