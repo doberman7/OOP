@@ -1,4 +1,4 @@
-#Super class, this inherate methods to the other class
+#Super class, this inherate methods to the other class 
 class Athlete
   # the atibutes of tha class can be readit and write it
   attr_accessor :distancia, :tiempo, :velozidad

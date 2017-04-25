@@ -1,3 +1,4 @@
+
 #RaceCar class
 class RaceCar
   LAP_DISTANCE = 100
