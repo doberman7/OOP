@@ -57,6 +57,8 @@ class Team
     end
     #al array speeds se injecta un variable para sumar las velozidades, posteriormente se divide entre el largo del array
      average_s_of_t=speeds.inject {|sum_of_speeds,speed| sum_of_speeds+speed}/speeds.length
+     #hacer que la velozidad promedio del equipo se presente solo con 2 decimales
+     average_s_of_t = "%.2f" % [average_s_of_t]
      "la velozidad promedio del equipo es #{average_s_of_t}"
   end
 end
