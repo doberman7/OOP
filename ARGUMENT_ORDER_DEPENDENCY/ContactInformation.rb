@@ -1,4 +1,4 @@
-class ContactInformation  
+class ContactInformation
   def initialize(nombre:, telefono:, celular:, email:, referencia:, colonia:, municipio:, ciudad:, estado:, codigo_postal:, calle:, num_ext:, num_int: nil, pais: "México", mayor_de_edad: false)
     @nombre = nombre
     @telefono = telefono
