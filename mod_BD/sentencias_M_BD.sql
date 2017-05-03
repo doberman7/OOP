@@ -27,7 +27,6 @@ WHERE CustomerID=3 AND OrderDate > "2013";
 --Constulta
 SELECT * FROM Orders
 WHERE CustomerID=6 AND OrderDate > "2013";
-
 --imagina que quieres borrar al cliente Slots Carpet, sus orders y OrderDetails
 --esta es la consulta
 SELECT Customers.CompanyName,Customers.CustomerID,orders.orderID,OrderDetails.OrderDetailID FROM customers
