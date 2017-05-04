@@ -1,3 +1,19 @@
+#instaled  => gem install sqlite3
+
+#on irb...
+  #cargamos BD
+  #irb> load 'chef.rb'
+  #=> true
+
+  #Creamos esquema de tabla
+  #irb> Chef.create_table
+  #=> []
+
+  #Sembramos datos en la BS
+  #irb> Chef.seed
+  #=> []
+
+
 require 'sqlite3'
 require 'faker'
 
@@ -57,6 +73,7 @@ class Chef
     )
   end
   #self permite activar el metodo directamente desde el objeto (i.e. Chef.all)
+  #SELECT * FROM chefs.db
   def self.all
     Chef.db.execute(
     <<-SQL
@@ -73,13 +90,40 @@ class Chef
       OR
       SELECT * FROM chefs WHERE "#{column}" = ?, "#{value}";
     SQL
-    #iterar en cada fila, cada fila son los datos de cada chef
+    #iterar en cada busqueda, cada busqueda son los datos de cada chef
     ).each do |chef|
       puts "ID     NAME   LAST NAME  BIRTHDAY       EMAIL                         PHONE                CREATED_AT             UPDATE_AT     "
       puts "#{chef[0]}     #{chef[1]}   #{chef[2]}    #{chef[3]}     #{chef[4]}    #{chef[5]}    #{chef[6]}    #{chef[7]}"
     end
   end
+  #INSERT values in the DB
+  def save
+    Chef.db.execute (
+    <<-SQL
+      INSERT INTO chefs (first_name, last_name ,  birthday, email , phone , created_at , updated_at)
+      --Wasn't able to tale place holders(sql injections) i.e. VALUES(?, ?, ?, ?, ?, ?, ?) BECAUSE "NOT NULL constraint failed: chefs.first_name (SQLite3::ConstraintException)"
+      VALUES ('#{@first_name}', '#{@last_name}', '#{@birthday}', '#{@email}', '#{@phone}', '#{@created_at}', '#{@updated_at}')
+      ;
+    SQL
+    )
+    #Execute a SELECT without the "<<-SQL SQL" sintaxis, taken from the docuemntation frames: http://www.rubydoc.info/gems/sqlite3/frames
+    Chef.db.execute( "SELECT * FROM chefs" ) do |row|
+     p row
+    end
 
+  end
+  #
+  def self.delete(ident)
+
+    Chef.db.execute(
+    <<-SQL
+      DELETE FROM chefs WHERE id = "#{ident}";
+    SQL
+    )
+    Chef.db.execute( "SELECT * FROM chefs" ) do |row|
+     p row
+    end
+  end
 
   private
 
@@ -88,6 +132,10 @@ class Chef
   end
 
 end
-p Chef.all
-Chef.where('first_name', 'Ferran')
-Chef.where('id', 10)
+#Chef.delete(16)
+#p Chef.all
+#Chef.where('first_name', 'Ferran')
+#Chef.where('id', 10)
+
+#chef = Chef.new("#{Faker::Name.first_name}", "#{Faker::Name.last_name }", '1985-02-09'," #{Faker::Internet.email}", "#{Faker::PhoneNumber.phone_number}", "#{Faker::Date.backward(14)}", "#{Faker::Date.backward(14)}")
+#chef.save
