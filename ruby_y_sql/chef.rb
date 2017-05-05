@@ -88,6 +88,7 @@ class Chef
     --seleccionar todos los datos en "chefs" donde se cumplen la igualdad de los argumentos, necesario es usar interpolacion
       SELECT * FROM chefs WHERE "#{column}" = "#{value}";
       OR
+      -- para evitar  SQL injection, se usa  "?,", vale mencionar que debe usarse en despues del "OR" o de lo contrario lanza un error
       SELECT * FROM chefs WHERE "#{column}" = ?, "#{value}";
     SQL
     #iterar en cada busqueda, cada busqueda son los datos de cada chef
@@ -102,7 +103,11 @@ class Chef
     <<-SQL
       INSERT INTO chefs (first_name, last_name ,  birthday, email , phone , created_at , updated_at)
       --Wasn't able to tale place holders(sql injections) i.e. VALUES(?, ?, ?, ?, ?, ?, ?) BECAUSE "NOT NULL constraint failed: chefs.first_name (SQLite3::ConstraintException)"
-      VALUES ('#{@first_name}', '#{@last_name}', '#{@birthday}', '#{@email}', '#{@phone}', '#{@created_at}', '#{@updated_at}')
+      VALUES('#{@first_name}', '#{@last_name}', '#{@birthday}', '#{@email}', '#{@phone}', '#{@created_at}', '#{@updated_at}')
+      ;
+      OR
+      -- para evitar  SQL injection, se usa  "?,", vale mencionar que debe usarse en despues del "OR" o de lo contrario lanza un error
+      VALUES (?, ?, ?, ?, ?, ?, ?, )
       ;
     SQL
     )
@@ -113,11 +118,17 @@ class Chef
 
   end
   #
-  def self.delete(ident)
+  def self.delete(column, value)
 
     Chef.db.execute(
     <<-SQL
-      DELETE FROM chefs WHERE id = "#{ident}";
+      DELETE FROM chefs
+      WHERE "#{column}" = "#{value}"
+      ;
+      OR
+      -- para evitar  SQL injection, se usa  "?,", vale mencionar que debe usarse en despues del "OR" o de lo contrario lanza un error
+      WHERE "#{column}" = ?, "#{value}"
+      ;
     SQL
     )
     Chef.db.execute( "SELECT * FROM chefs" ) do |row|
@@ -132,10 +143,17 @@ class Chef
   end
 
 end
-#Chef.delete(16)
+#PRUEBAS PARA BORRAR
+#Chef.delete("id",17)
+#Chef.delete("first_name","Reinger")
+
+# HACER SELECT *
 #p Chef.all
+
+# SELECT CON ATRIBUTOS
 #Chef.where('first_name', 'Ferran')
 #Chef.where('id', 10)
 
-#chef = Chef.new("#{Faker::Name.first_name}", "#{Faker::Name.last_name }", '1985-02-09'," #{Faker::Internet.email}", "#{Faker::PhoneNumber.phone_number}", "#{Faker::Date.backward(14)}", "#{Faker::Date.backward(14)}")
-#chef.save
+# INSERT INTO DB
+chef = Chef.new("#{Faker::Name.first_name}", "#{Faker::Name.last_name }", '1985-02-09'," #{Faker::Internet.email}", "#{Faker::PhoneNumber.phone_number}", "#{Faker::Date.backward(14)}", "#{Faker::Date.backward(14)}")
+chef.save
