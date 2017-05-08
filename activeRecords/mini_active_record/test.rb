@@ -37,10 +37,27 @@ assert todas_las_comidas.first[:name]=="Chicken Burger"
   #Actualizamos aquella con el id 92
   #meal = Meal.create(id:92, name:"Taco", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
 meal = Meal.find(91)
-assert meal[:id]=91
+assert meal[:id]==91
 assert meal[:name]=="Sopa"
 #METODO WHERE
-#self.where(query, *args)
-#Chef.where("id",("id"=1))
+#ASSIGNAR objeto chef metodizado con el parametro en forma de string que se convertirá en el query
+chef=Chef.where("id=20")
+#el metodo .where regresa un Array
+#por ello aplicamos ".pop" para reasingar el ultimo elemento del Array, dado que solo hay un objeto en el Array
+chef=chef.pop
+assert chef[:id]==20
+
+#objetener las comidas del chef con el id 4, ingresas en un ary
+meals_chef4 = Meal.where("chef_id=4")
+#revisar que toadas las comidas pertenezcan el al chef con id 4
+meals_chef4.each do |m_e_a_l|
+  assert m_e_a_l[:chef_id] == 4
+end
+
+meal2 = Meal.create(name:"Salad", chef_id:4 ,created_at:Time.now, updated_at:Time.now)
+#Seguin yo new_record? siempre es "falso", ya que en la DB se lee:
+  # We say a record is "new" if it doesn't have a defined primary key in its
+  # attributes
+meal2.new_record?
 
 puts "finished"
