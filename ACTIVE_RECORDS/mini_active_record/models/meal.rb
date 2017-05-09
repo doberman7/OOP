@@ -13,13 +13,13 @@ class Meal < MiniActiveRecord::Model
 
     record
   # end
-=end
+
   def self.where(query, *args)
     MiniActiveRecord::Model.execute("SELECT * FROM meals WHERE #{query}", *args).map do |row|
     self.new(row)
     end
   end
-
+=end
   def self.find(pk)
     self.where('id = ?', pk).first
   end

@@ -31,14 +31,18 @@ module MiniActiveRecord
           record.save
           record
         end
-=begin
+
         def self.where(query, *args)
-          MiniActiveRecord::Model.execute("SELECT * FROM meals WHERE #{query}", *args).map do |row|
-            p self
+          #CASE for determining the Data Base (db) in the Query
+          case
+            when self == Chef then db = "chefs"
+            when self == Meal then db = "meals"
+          end
+          MiniActiveRecord::Model.execute("SELECT * FROM #{db} WHERE #{query}", *args).map do |row|
             self.new(row)
           end
         end
-
+=begin
         def self.find(pk)
           self.where('id = ?', pk).first
         end
