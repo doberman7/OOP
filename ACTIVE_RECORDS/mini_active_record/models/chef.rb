@@ -1,11 +1,11 @@
 class Chef < MiniActiveRecord::Model
-
+=begin
   def self.all
     MiniActiveRecord::Model.execute("SELECT * FROM chefs").map do |row|
       Chef.new(row)
     end
   end
-=begin
+
   def self.create(attributes)
 
     record = self.new(attributes)
@@ -19,11 +19,11 @@ class Chef < MiniActiveRecord::Model
       self.new(row)
     end
   end
-=end
+
   def self.find(pk)
     self.where('id = ?', pk).first
   end
-
+=end
   self.attribute_names = [:id, :first_name, :last_name, :email, :phone,
                           :birthday, :created_at, :updated_at]
 

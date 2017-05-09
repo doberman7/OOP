@@ -16,15 +16,18 @@ module MiniActiveRecord
       @old_attributes = @attributes.dup
     end
     #------------------------------------
-=begin
+
         def self.all
-          MiniActiveRecord::Model.execute("SELECT * FROM chefs").map do |row|
+          case
+            when self == Chef then db = "chefs"
+            when self == Meal then db = "meals"
+          end
+          MiniActiveRecord::Model.execute("SELECT * FROM #{db}").map do |row|
             #si se ubiera usado el la clase self.class => Class
-            p self
             self.new(row)
           end
         end
-=end
+
 
         def self.create(attributes)
           record = self.new(attributes)
@@ -42,10 +45,11 @@ module MiniActiveRecord
             self.new(row)
           end
         end
-=begin
+
         def self.find(pk)
           self.where('id = ?', pk).first
         end
+=begin
         def new_record?
           self[:id].nil?
         end

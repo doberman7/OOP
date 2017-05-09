@@ -1,11 +1,11 @@
 class Meal < MiniActiveRecord::Model
-
+=begin
   def self.all
     MiniActiveRecord::Model.execute("SELECT * FROM meals").map do |row|
       Meal.new(row)
     end
   end
-=begin
+
   def self.create(attributes)
 
     record = self.new(attributes)
@@ -19,11 +19,11 @@ class Meal < MiniActiveRecord::Model
     self.new(row)
     end
   end
-=end
+
   def self.find(pk)
     self.where('id = ?', pk).first
   end
-
+=end
   self.attribute_names = [:id, :name, :chef_id, :created_at, :updated_at]
 
   attr_reader :attributes, :old_attributes
