@@ -1,4 +1,5 @@
 class Meal < MiniActiveRecord::Model
+
   def self.all
     MiniActiveRecord::Model.execute("SELECT * FROM meals").map do |row|
       Meal.new(row)
@@ -17,11 +18,11 @@ class Meal < MiniActiveRecord::Model
       Meal.new(row)
     end
   end
-
+=begin
   def self.find(pk)
     self.where('id = ?', pk).first
   end
-
+=end
   self.attribute_names = [:id, :name, :chef_id, :created_at, :updated_at]
 
   attr_reader :attributes, :old_attributes
@@ -33,7 +34,7 @@ class Meal < MiniActiveRecord::Model
 
     @attributes = {}
 
-    self.class.attribute_names.each do |name|
+    Meal.attribute_names.each do |name|
       @attributes[name] = attributes[name]
     end
 
@@ -62,11 +63,11 @@ class Meal < MiniActiveRecord::Model
 
     chef
   end
-
+=begin
   def new_record?
     self[:id].nil?
   end
-
+=end
 
   def save
     if new_record?
@@ -83,7 +84,7 @@ class Meal < MiniActiveRecord::Model
 
 
   private
-
+=begin
   def insert!
     self[:created_at] = DateTime.now
     self[:updated_at] = DateTime.now
@@ -113,5 +114,5 @@ class Meal < MiniActiveRecord::Model
     # We have to use the (potentially) old ID attribute in case the user has re-set it.
     MiniActiveRecord::Model.execute(update_sql, *values, self.old_attributes[:id])
   end
-
+=end
 end
