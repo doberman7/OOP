@@ -5,7 +5,7 @@ def assert(truthy)
 end
 
 # Este es un ejemplo de como crear una prueba para el método 'create'.
-chefx = Chef.create(first_name: "Eduardo", last_name: "Fernández", email:"eduardo@gmail.com", phone:"930-028-2908 x7555", birthday:Time.now)
+Chef.create(first_name: "Eduardo", last_name: "Fernández", email:"eduardo@gmail.com", phone:"930-028-2908 x7555", birthday:Time.now)
 
 #Si lees el método create este se compone de los métodos 'new' y 'save' por ello si 'create' funciona los otros dos también.
 
@@ -36,7 +36,7 @@ assert todas_las_comidas.first[:name]=="Chicken Burger"
 #METODO CREATE
 #crear la comida 91 y 92
   #creamos dos comidas iguales:
-    #meal = Meal.create(name:"Sopa", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
+Meal.create(name:"Sopa", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
   #Actualizamos aquella con el id 92
   #meal = Meal.create(id:92, name:"Taco", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
 meal = Meal.find(12)

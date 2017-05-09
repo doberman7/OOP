@@ -1,28 +1,29 @@
 class Chef < MiniActiveRecord::Model
-=begin
+
   def self.all
     MiniActiveRecord::Model.execute("SELECT * FROM chefs").map do |row|
       Chef.new(row)
     end
   end
-
+=begin
   def self.create(attributes)
+
     record = self.new(attributes)
     record.save
 
     record
   end
-
+=end
   def self.where(query, *args)
     MiniActiveRecord::Model.execute("SELECT * FROM chefs WHERE #{query}", *args).map do |row|
-      Chef.new(row)
+      self.new(row)
     end
   end
 
   def self.find(pk)
     self.where('id = ?', pk).first
   end
-=end
+
   self.attribute_names = [:id, :first_name, :last_name, :email, :phone,
                           :birthday, :created_at, :updated_at]
 
@@ -60,11 +61,11 @@ class Chef < MiniActiveRecord::Model
 
   # We say a record is "new" if it doesn't have a defined primary key in its
   # attributes
-=begin
+
   def new_record?
     self[:id].nil?
   end
-=end
+
   # e.g., chef[:first_name] #=> 'Steve'
   def [](attribute)
     raise_error_if_invalid_attribute!(attribute)
@@ -93,7 +94,7 @@ class Chef < MiniActiveRecord::Model
 
 
   private
-=begin
+
   def insert!
     self[:created_at] = DateTime.now
     self[:updated_at] = DateTime.now
@@ -123,5 +124,6 @@ class Chef < MiniActiveRecord::Model
     # We have to use the (potentially) old ID attribute in case the user has re-set it.
     MiniActiveRecord::Model.execute(update_sql, *values, self.old_attributes[:id])
   end
-=end
+
+
 end

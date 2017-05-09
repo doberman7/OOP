@@ -15,20 +15,38 @@ module MiniActiveRecord
 
       @old_attributes = @attributes.dup
     end
+    #------------------------------------
+=begin
+        def self.all
+          MiniActiveRecord::Model.execute("SELECT * FROM chefs").map do |row|
+            #si se ubiera usado el la clase self.class => Class
+            p self
+            self.new(row)
+          end
+        end
+=end
 
-    def save
-      if new_record?
-        results = insert!
-      else
-        results = update!
-      end
+        def self.create(attributes)
+          record = self.new(attributes)
+          record.save
+          record
+        end
+=begin
+        def self.where(query, *args)
+          MiniActiveRecord::Model.execute("SELECT * FROM meals WHERE #{query}", *args).map do |row|
+            p self
+            self.new(row)
+          end
+        end
 
-      # When we save, remove changes between new and old attributes
-      @old_attributes = @attributes.dup
-
-      results
-    end
-
+        def self.find(pk)
+          self.where('id = ?', pk).first
+        end
+        def new_record?
+          self[:id].nil?
+        end
+=end
+#---------------------------------------------
     def self.inherited(klass)
     end
 
@@ -97,88 +115,10 @@ module MiniActiveRecord
       "#<#{self.class} #{attribute_str}>"
     end
 
-    def self.all
-      MiniActiveRecord::Model.execute("SELECT * FROM chefs").map do |row|
-        self.class.new(row)
-      end
-    end
 
-    def self.create(attributes)
-      record = self.new(attributes)
-      record.save
 
-      record
-    end
+private
 
-    def self.where(query, *args)
-      MiniActiveRecord::Model.execute("SELECT * FROM chefs WHERE #{query}", *args).map do |row|
-        self.class.new(row)
-      end
-    end
-
-    def self.find(pk)
-      self.where('id = ?', pk).first
-    end
-
-#------------------------------------
-    def self.all
-      MiniActiveRecord::Model.execute("SELECT * FROM chefs").map do |row|
-        #si se ubiera usado el la clase self.class => Class
-        self.new(row)
-      end
-    end
-
-    def self.create(attributes)
-      record = self.new(attributes)
-      record.save
-
-      record
-    end
-
-    def self.where(query, *args)
-      MiniActiveRecord::Model.execute("SELECT * FROM chefs WHERE #{query}", *args).map do |row|
-        self.new(row)
-      end
-    end
-
-    def self.find(pk)
-      self.where('id = ?', pk).first
-    end
-    def new_record?
-      self[:id].nil?
-    end
-#----------------------------------------
-    private
-    def insert!
-      self[:created_at] = DateTime.now
-      self[:updated_at] = DateTime.now
-
-      fields = self.attributes.keys
-      values = self.attributes.values
-      marks  = Array.new(fields.length) { '?' }.join(',')
-
-      insert_sql = "INSERT INTO chefs (#{fields.join(',')}) VALUES (#{marks})"
-
-      results = MiniActiveRecord::Model.execute(insert_sql, *values)
-
-      # This fetches the new primary key and updates this instance
-      self[:id] = MiniActiveRecord::Model.last_insert_row_id
-      results
-    end
-
-    def update!
-      self[:updated_at] = DateTime.now
-
-      fields = self.attributes.keys
-      values = self.attributes.values
-
-      update_clause = fields.map { |field| "#{field} = ?" }.join(',')
-      update_sql = "UPDATE chefs SET #{update_clause} WHERE id = ?"
-
-      # We have to use the (potentially) old ID attribute in case the user has re-set it.
-      MiniActiveRecord::Model.execute(update_sql, *values, self.old_attributes[:id])
-    end
-#---------------------------------
     def self.prepare_value(value)
       case value
       when Time, DateTime, Date
