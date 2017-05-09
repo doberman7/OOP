@@ -12,7 +12,7 @@ class Chef < MiniActiveRecord::Model
     record
   end
 
-  def self.where(query, *args)    
+  def self.where(query, *args)
     MiniActiveRecord::Model.execute("SELECT * FROM chefs WHERE #{query}", *args).map do |row|
       Chef.new(row)
     end
@@ -28,6 +28,7 @@ class Chef < MiniActiveRecord::Model
   attr_reader :attributes, :old_attributes
 
   # e.g., Chef.new(id: 1, first_name: 'Steve', last_name: 'Rogers', ...)
+=begin
   def initialize(attributes = {})
     attributes.symbolize_keys!
     raise_error_if_invalid_attribute!(attributes.keys)
@@ -41,7 +42,8 @@ class Chef < MiniActiveRecord::Model
 
     @old_attributes = @attributes.dup
   end
-
+=end
+=begin
   def save
     if new_record?
       results = insert!
@@ -54,7 +56,7 @@ class Chef < MiniActiveRecord::Model
 
     results
   end
-
+=end
   # We say a record is "new" if it doesn't have a defined primary key in its
   # attributes
   def new_record?
@@ -119,4 +121,5 @@ class Chef < MiniActiveRecord::Model
     # We have to use the (potentially) old ID attribute in case the user has re-set it.
     MiniActiveRecord::Model.execute(update_sql, *values, self.old_attributes[:id])
   end
+
 end

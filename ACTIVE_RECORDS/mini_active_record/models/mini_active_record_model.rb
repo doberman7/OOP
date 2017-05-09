@@ -3,6 +3,31 @@ module MiniActiveRecord
   class NotConnectedError < StandardError; end
 
   class Model
+    def initialize(attributes = {})
+      attributes.symbolize_keys!
+      raise_error_if_invalid_attribute!(attributes.keys)
+
+      @attributes = {}
+
+      self.class.attribute_names.each do |name|
+        @attributes[name] = attributes[name]
+      end
+
+      @old_attributes = @attributes.dup
+    end
+
+    def save
+      if new_record?
+        results = insert!
+      else
+        results = update!
+      end
+
+      # When we save, remove changes between new and old attributes
+      @old_attributes = @attributes.dup
+
+      results
+    end
 
     def self.inherited(klass)
     end
@@ -83,6 +108,7 @@ module MiniActiveRecord
         value
       end
     end
+
 
   end
 

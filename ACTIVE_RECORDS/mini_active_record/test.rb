@@ -5,18 +5,18 @@ def assert(truthy)
 end
 
 # Este es un ejemplo de como crear una prueba para el método 'create'.
-#chef = Chef.create(first_name: "Eduardo", last_name: "Fernández", email:"eduardo@gmail.com", phone:"930-028-2908 x7555", birthday:Time.now)
+chefx = Chef.create(first_name: "Eduardo", last_name: "Fernández", email:"eduardo@gmail.com", phone:"930-028-2908 x7555", birthday:Time.now)
 
 #Si lees el método create este se compone de los métodos 'new' y 'save' por ello si 'create' funciona los otros dos también.
 
 # Este es un ejemplo de una prueba para el método 'find'.
 # Como en la linea pasada creamos al primer chef entonces podemos buscarlo con el id => 1
- chef = Chef.find(1)
+chef = Chef.find(1)
 
 # Estas son pruebas para el método '[ ]'
 # Como sabemos que el chef que creamos se llama 'Eduardo' y apellida 'Fernandez', podemos escribir la siguiente comparación.
-assert chef[:first_name] == 'Eduardo'
-assert chef[:last_name] == 'Fernández'
+assert chef[:id] == 1
+assert chef[:last_name] == 'Harvey'
 
 
 # El siguiente paso es crear las pruebas de todos los métodos que aparecen en los archivos models/chef.rb y models/meal.rb (solamente de los métodos similares),
@@ -24,7 +24,10 @@ assert chef[:last_name] == 'Fernández'
 #METODO .all
 todos_los_chefs = Chef.all
 assert todos_los_chefs.first[:id]=1
-assert todos_los_chefs.first[:first_name]='Eduardo'
+assert todos_los_chefs.first[:first_name]='Harvey'
+assert todos_los_chefs.last[:first_name]='Eduardo'
+
+
 
 todas_las_comidas = Meal.all
 assert todas_las_comidas.first[:id]==1
@@ -36,9 +39,9 @@ assert todas_las_comidas.first[:name]=="Chicken Burger"
     #meal = Meal.create(name:"Sopa", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
   #Actualizamos aquella con el id 92
   #meal = Meal.create(id:92, name:"Taco", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
-meal = Meal.find(91)
-assert meal[:id]==91
-assert meal[:name]=="Sopa"
+meal = Meal.find(12)
+assert meal[:id]==12
+assert meal[:name]=="Fish Sandwich"
 #METODO WHERE
 #ASSIGNAR objeto chef metodizado con el parametro en forma de string que se convertirá en el query
 chef=Chef.where("id=20")
@@ -54,10 +57,10 @@ meals_chef4.each do |m_e_a_l|
   assert m_e_a_l[:chef_id] == 4
 end
 
-meal2 = Meal.create(name:"Salad", chef_id:4 ,created_at:Time.now, updated_at:Time.now)
+#meal2 = Meal.create(name:"Salad", chef_id:4 ,created_at:Time.now, updated_at:Time.now)
 #Seguin yo new_record? siempre es "falso", ya que en la DB se lee:
   # We say a record is "new" if it doesn't have a defined primary key in its
   # attributes
-meal2.new_record?
+#meal2.new_record?
 
 puts "finished"
