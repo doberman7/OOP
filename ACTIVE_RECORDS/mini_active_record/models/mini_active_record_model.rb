@@ -49,11 +49,11 @@ module MiniActiveRecord
         def self.find(pk)
           self.where('id = ?', pk).first
         end
-=begin
+
         def new_record?
           self[:id].nil?
         end
-=end
+
 #---------------------------------------------
     def self.inherited(klass)
     end
@@ -126,6 +126,44 @@ module MiniActiveRecord
 
 
 private
+def insert!
+  self[:created_at] = DateTime.now
+  self[:updated_at] = DateTime.now
+
+  fields = self.attributes.keys
+  values = self.attributes.values
+  marks  = Array.new(fields.length) { '?' }.join(',')
+
+  case
+    when  self.class == Chef then db = "chefs"
+    when  self.class == Meal then db = "meals"
+  end
+  insert_sql = "INSERT INTO #{db} (#{fields.join(',')}) VALUES (#{marks})"
+
+  results = MiniActiveRecord::Model.execute(insert_sql, *values)
+
+  # This fetches the new primary key and updates this instance
+  self[:id] = MiniActiveRecord::Model.last_insert_row_id
+  results
+end
+
+def update!
+  self[:updated_at] = DateTime.now
+
+  fields = self.attributes.keys
+  values = self.attributes.values
+
+  update_clause = fields.map { |field| "#{field} = ?" }.join(',')
+  
+  case
+  when self.class == Chef then db = "chefs"
+    when self.class == Meal then db = "meals"
+  end
+  update_sql = "UPDATE #{db} SET #{update_clause} WHERE id = ?"
+
+  # We have to use the (potentially) old ID attribute in case the user has re-set it.
+  MiniActiveRecord::Model.execute(update_sql, *values, self.old_attributes[:id])
+end
 
     def self.prepare_value(value)
       case value

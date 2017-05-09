@@ -61,11 +61,11 @@ class Chef < MiniActiveRecord::Model
 
   # We say a record is "new" if it doesn't have a defined primary key in its
   # attributes
-
+=begin
   def new_record?
     self[:id].nil?
   end
-
+=end
   # e.g., chef[:first_name] #=> 'Steve'
   def [](attribute)
     raise_error_if_invalid_attribute!(attribute)
@@ -92,7 +92,7 @@ class Chef < MiniActiveRecord::Model
     meals
   end
 
-
+=begin
   private
 
   def insert!
@@ -124,6 +124,6 @@ class Chef < MiniActiveRecord::Model
     # We have to use the (potentially) old ID attribute in case the user has re-set it.
     MiniActiveRecord::Model.execute(update_sql, *values, self.old_attributes[:id])
   end
-
+=end
 
 end

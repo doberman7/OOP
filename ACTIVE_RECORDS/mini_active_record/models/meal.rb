@@ -64,11 +64,11 @@ class Meal < MiniActiveRecord::Model
 
     chef
   end
-
+=begin
   def new_record?
     self[:id].nil?
   end
-
+=end
 
   def save
     if new_record?
@@ -83,7 +83,7 @@ class Meal < MiniActiveRecord::Model
     results
   end
 
-
+=begin
   private
 
   def insert!
@@ -115,5 +115,5 @@ class Meal < MiniActiveRecord::Model
     # We have to use the (potentially) old ID attribute in case the user has re-set it.
     MiniActiveRecord::Model.execute(update_sql, *values, self.old_attributes[:id])
   end
-
+=end
 end

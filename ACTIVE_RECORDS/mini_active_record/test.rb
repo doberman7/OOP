@@ -20,30 +20,33 @@ assert chef[:last_name] == 'Harvey'
 
 
 # El siguiente paso es crear las pruebas de todos los métodos que aparecen en los archivos models/chef.rb y models/meal.rb (solamente de los métodos similares),
-#chefs
-#METODO .all
+
+#ALL
 todos_los_chefs = Chef.all
 assert todos_los_chefs.first[:id]=1
 assert todos_los_chefs.first[:first_name]='Harvey'
 assert todos_los_chefs.last[:first_name]='Eduardo'
 
-
-
 todas_las_comidas = Meal.all
 assert todas_las_comidas.first[:id]==1
 assert todas_las_comidas.first[:name]=="Chicken Burger"
 
-#METODO CREATE
-#crear la comida 91 y 92
-  #creamos dos comidas iguales:
+#CREATE
 Meal.create(name:"Sopa", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
-  #Actualizamos aquella con el id 92
-  #meal = Meal.create(id:92, name:"Taco", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
+
+#FIND
 meal = Meal.find(12)
 assert meal[:id]==12
 assert meal[:name]=="Fish Sandwich"
+
+#UPDATE
+Meal.create(id:194, name:"quesadilla de habas", chef_id:1 ,created_at:Time.now, updated_at:Time.now)
+meal = Meal.find(194)
+assert meal[:name]=="quesadilla de habas"
+
+
 #METODO WHERE
-#ASSIGNAR objeto chef metodizado con el parametro en forma de string que se convertirá en el query
+#ASSIGNAR objeto chef con metodo ".where" con el parametro en forma de string que se convertirá en el query
 chef=Chef.where("id=20")
 #el metodo .where regresa un Array
 #por ello aplicamos ".pop" para reasingar el ultimo elemento del Array, dado que solo hay un objeto en el Array
@@ -56,11 +59,5 @@ meals_chef4 = Meal.where("chef_id=4")
 meals_chef4.each do |m_e_a_l|
   assert m_e_a_l[:chef_id] == 4
 end
-
-#meal2 = Meal.create(name:"Salad", chef_id:4 ,created_at:Time.now, updated_at:Time.now)
-#Seguin yo new_record? siempre es "falso", ya que en la DB se lee:
-  # We say a record is "new" if it doesn't have a defined primary key in its
-  # attributes
-#meal2.new_record?
 
 puts "finished"
