@@ -17,14 +17,15 @@ class User < ActiveRecord::Base
     #que es la misma implementaciond de mario: https://github.com/Alux77/DB-7/blob/master/app/models/user.rb
 
   #Dos usuarios no deberán tener el mismo email, este debe de ser único.
+  #validates es pàra atributos
   validates :email , uniqueness: true
 
   #Los usuarios deberán de ser mayores de edad.
-  before_validation :not_a_kid?
-  #DUDA! por que no funciona asi:
-    #validates :not_a_kid?  => You need to supply at least one validation
+  #before_validation :not_a_kid?
+  #validate es para llamar metodos
+    validate :not_a_kid?
 
-  #validación personalizada donde el teléfono no pueda tener menos de 10 dígitos sin contar caracteres no numéricos.  
+  #validación personalizada donde el teléfono no pueda tener menos de 10 dígitos sin contar caracteres no numéricos.
   #funciona, pero contempla todos los string's, no solo numeros
   validates :phone, length: { minimum: 10}
 
