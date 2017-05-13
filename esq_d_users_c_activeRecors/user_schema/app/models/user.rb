@@ -10,14 +10,24 @@ class User < ActiveRecord::Base
     #-al menos un .
     #-con al menos un caracter antes de la @, un caracter entre la @ y el primer . y al menos dos caracteres después del . final.
   validates :email, :format => {:with=> /\A([^@\s]+)(@{1})(.+)(\.{1,})(.{2,})\z/, :on=> :create}
-  #alternativa hecha por mario /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  #OTRA OPCION de regexp:
+    # /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+    #http://guides.rubyonrails.org/v3.2.13/active_record_validations_callbacks.html#performing-custom-validations
+    #en 6.1 Custom Validators
+    #que es la misma implementaciond de mario: https://github.com/Alux77/DB-7/blob/master/app/models/user.rb
 
   #Dos usuarios no deberán tener el mismo email, este debe de ser único.
   validates :email , uniqueness: true
 
   #Los usuarios deberán de ser mayores de edad.
   before_validation :not_a_kid?
-  #validates :not_a_kid?  => You need to supply at least one validation
+  #DUDA! por que no funciona asi:
+    #validates :not_a_kid?  => You need to supply at least one validation
+
+  #validación personalizada donde el teléfono no pueda tener menos de 10 dígitos sin contar caracteres no numéricos.  
+  #funciona, pero contempla todos los string's, no solo numeros
+  validates :phone, length: { minimum: 10}
+
   def name
     name =  "#{self.first_name} #{self.last_name}"
     name
@@ -34,7 +44,3 @@ class User < ActiveRecord::Base
   end
 
 end
-
-
-
-#https://github.com/Alux77/DB-7/blob/master/app/models/user.rb
