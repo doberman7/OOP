@@ -21,6 +21,17 @@ class View
   def update
   end
 
-	def error
+	def error(number_of_error)
+    case number_of_error
+    when 0 then puts 'that option doesnt exist'
+
+    end
 	end
+  def admin(admin_option)
+    case admin_option
+    when 0 then puts "Bienvenido Administrador \n#{"-"*30}"
+    when 1 then puts "Ingrese usuario:"
+    when 2 then puts "Ingrese contraseña:"
+    end
+  end
 end

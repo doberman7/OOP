@@ -18,7 +18,8 @@ class Controller
       when "1" then booking
       when "2" then admin
       when "3" then out
-      else "not valid"
+      else
+        @view.error(0)
     end
 
   end
@@ -26,9 +27,18 @@ class Controller
   def booking
     p 'booking'
   end
+
   def admin
-    p 'admin'
+    @view.admin(0)#=> welcom admin
+    @view.admin(1)#=> insert user
+    argv_content = @argv_ary.any?
+    if argv_content==false
+      admin_contra = gets.chomp
+      p admin_contra
+    end
+    @view.admin(2)#=> insert contra
   end
+
   def out
     p 'out'
   end
