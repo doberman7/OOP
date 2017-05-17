@@ -1,6 +1,7 @@
 #http://guides.rubyonrails.org/active_record_querying.html
 #https://medium.com/@jbmilgrom/active-record-many-to-many-self-join-table-e0992c27c1e
 class Flight < ActiveRecord::Base
+	#validates that there is no nil atributes
   validates :num_flight, presence: true
   validates :date, presence: true
   validates :num_flight, presence: true
@@ -19,6 +20,7 @@ end
 class User < ActiveRecord::Base
   validates :name, presence: true
   validates :email, presence: true
+	validates :password, presence: true
   #--------------
 	has_many :flights
 	has_many :bookings

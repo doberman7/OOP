@@ -24,6 +24,7 @@ class CreateFlights < ActiveRecord::Migration
     	# Completa con las columnas que necesites
       t.string :name
       t.string :email
+      t.text :password
       t.boolean :admin, default: false
       t.timestamps
     end

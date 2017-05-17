@@ -12,14 +12,11 @@ Flight.create(num_flight: 386, date: Faker::Date.forward(23), depart: "12:50:00"
 Flight.create(num_flight: 109, date: Faker::Date.forward(23), depart: "07:25:00", from: "CDMX", to: "Durango", duration: "2:00:00", cost: 3500.00, passengers: 80)
 
 #USER's
-User.create(name: 'admin', email: 'email', admin: true)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
-User.create(name: Faker::Name.name, email: Faker::Internet.email)
+#only the User.name=admin is has a "admin: true"
+User.create(name: 'admin', email: 'email', admin: true, password:"pass")
+User.create(name: 'admin2', email: 'email2', admin: true, password:"pass")
+#for the rest of users the value is "admin, default: false"
+User.create(name: Faker::Name.name, email: Faker::Internet.email, password:"123")
+User.create(name: Faker::Name.name, email: Faker::Internet.email, password:"123")
 #Booking
 Booking.create(flight_id: 1, num_booking: 1, total: 0.0)
