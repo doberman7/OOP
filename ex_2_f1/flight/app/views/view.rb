@@ -54,7 +54,7 @@ class View
         num_booking = "#{rand(500)}-#{rand(9)}"
         puts "Y tu ID de reservación es la siguiente #{num_booking}"
         num_booking
-      elsif reservacion_input == "NO" || reservacion_input == "no"        
+      elsif reservacion_input == "NO" || reservacion_input == "no"
         :ticket_canceled
       end
     end
@@ -75,7 +75,7 @@ class View
     case type_of_error
       when 0 then puts 'that option doesnt exist'
       when :invalid_user then puts 'usuario no valido'
-      when :no_flight_founded then puts 'ningun vuelo con ese numero'
+      when :no_flight_founded then puts 'ningun vuelo con ese numero, ingresa NUMERO DE VUELO'
       when :not_enough_seets then puts 'no suficientes asientos'
     end
 	end
@@ -128,8 +128,10 @@ class View
         puts "Selecciona una opcion:"
       when :input then STDIN.gets.chomp
       when :find_my_ticket
-        Flight.all.each do |f|
-          puts "Numero de Vuelo:#{f.num_flight}"
+        #p Flight.group(:from)
+        # STDIN.gets.chomp
+        Flight.all.each_with_index do |f,index|
+          puts "#{index+=1}) NUMERO DE VUELO:#{f.num_flight}"
           puts "Fecha:#{f.date}"
           puts "Salida:#{f.depart}"
           puts "Origen:#{f.from}"
@@ -139,7 +141,7 @@ class View
           puts "Pasajeros:#{f.passengers}"
           puts "*" * 30
         end
-        puts 'Selecciona tu numero vuelo:'
+        puts 'ingresa tu NUMERO DE VUELO:'
 
       else
         flight_data.each do |f|

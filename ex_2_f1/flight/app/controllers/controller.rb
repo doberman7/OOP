@@ -55,12 +55,10 @@ class Controller
           #restar el numero de pasajeros en el avion
           flight_data.passengers = flight_data.passengers - num_of_passangers
           #AQUI
-          #actulizar BD de vuelos
-          p "1"
+          #-------------------actulizar BD de vuelos
           founded_plane.update(flight_data.id, passengers: flight_data.passengers)
-          p "2"
-          p Booking.create!(flight_id: founded_plane.id, num_booking: num_booking, total: total_cost)
-
+          #-------------------crear nuevo registro BD Booking
+          Booking.create!(flight_id: flight_data.id, num_booking: num_booking, total: total_cost)
           @view.update(:booking_done)#=>"reservacion realizada"
         #id tiket is canceled users the metod 'find_flight' is invoked
         elsif ticket_ary[0] == :ticket_canceled
@@ -85,7 +83,7 @@ class Controller
         founded_plane.empty? ? @view.error(:no_flight_founded): booking(founded_plane);
         #----------
         find_flight
-      when "2" then out
+      when "2" then index
     end
 
   end

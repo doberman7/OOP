@@ -1,15 +1,15 @@
 # Este archivo sirve para crear registros de prueba
 require 'faker'
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "08:15:15", from: "Cancun", to: "CDMX", duration: "2:00:00", cost: 2100.00, passengers: 100)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "11:33:25", from: "CDMX", to: "Durango", duration: "2:00:00", cost: 3200.00, passengers: 90)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "09:45:00", from: "Monterrey", to: "CDMX", duration: "3:00:00", cost: 3000.00, passengers: 150)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "10:05:00", from: "Guadalajara", to: "CDMX", duration: "2:00:00", cost: 1500.00, passengers: 80)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "06:30:00", from: "CDMX", to: "Toluca", duration: "3:00:00", cost: 1900.00, passengers: 110)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "11:00:00", from: "Monterrey", to: "CDMX", duration: "2:00:00", cost: 2200.00, passengers: 90)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "12:10:00", from: "Cancun", to: "CDMX", duration: "3:00:00", cost: 3000.00, passengers: 80)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "11:17:17", from: "Guadalajara", to: "CDMX", duration: "2:00:00", cost: 2200.00, passengers: 90)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "12:50:00", from: "Cancun", to: "CDMX", duration: "3:00:00", cost: 2500.00, passengers: 80)
-Flight.create(num_flight: rand(47615), date: Faker::Date.forward(23), depart: "07:25:00", from: "CDMX", to: "Durango", duration: "2:00:00", cost: 3500.00, passengers: 80)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "08:15:15", from: "Kioto", to: "CDMX", duration: "2:00:00", cost: 2100.00, passengers: 100)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "11:33:25", from: "CDMX", to: "Kioto", duration: "2:00:00", cost: 3200.00, passengers: 90)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "09:45:00", from: "Istanbul", to: "CDMX", duration: "3:00:00", cost: 3000.00, passengers: 150)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "10:05:00", from: "CDMX", to: "Istanbul", duration: "2:00:00", cost: 1500.00, passengers: 80)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "06:30:00", from: "CDMX", to: "Paramaribo", duration: "3:00:00", cost: 1900.00, passengers: 110)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "11:00:00", from: "Paramaribo", to: "CDMX", duration: "2:00:00", cost: 2200.00, passengers: 90)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "12:10:00", from: "Roma", to: "CDMX", duration: "3:00:00", cost: 3000.00, passengers: 80)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "11:17:17", from: "CDMX", to: "ROMA", duration: "2:00:00", cost: 2200.00, passengers: 90)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "12:50:00", from: "Londres", to: "CDMX", duration: "3:00:00", cost: 2500.00, passengers: 80)
+Flight.create(num_flight: rand(500), date: Faker::Date.forward(23), depart: "07:25:00", from: "CDMX", to: "Londres", duration: "2:00:00", cost: 3500.00, passengers: 80)
 
 #USER's
 #only the User.name=admin is has a "admin: true"
