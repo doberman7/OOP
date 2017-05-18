@@ -12,21 +12,71 @@ class View
     puts 'Selecciona opcion:'
 	end
 
-  def create
+  def ticket(ticket_case, flight_data,num_of_passangers)
+    case ticket_case
+    when :create_tiket
+      tiket_result = nil
+      persons = {}
+      puts "-" * 50
+      flight_data.each do |f|
+        puts "Número de Vuelo Seleccionado: #{f.num_flight}"
+        puts "-" * 50
+        puts "Date: #{f.date}, Depart: #{f.depart}"
+        puts "From: #{f.from}, To: #{f.to}, Duration: #{f.duration}, Precio: #{f.cost}"
+        puts "-" * 50
+        #El número de datos de persona dependerá del número de passengers.
+        seets = num_of_passangers
+        pers = 0
+        until seets <=0
+          puts "Datos de Persona #{pers+=1}:"
+          puts "Ingresa nombre :"
+          p_name = STDIN.gets.chomp
+          puts  "Ingresa email:"
+          #construir relacion de name: email en el hash
+          persons[p_name] = STDIN.gets.chomp
+          seets -= 1
+        end
+        total_cost = f.cost * persons.length
+        tiket_result = [persons,total_cost]
+      end
+      tiket_result
+    when :display_ticket
+      persons = flight_data[0]
+      total_cost=flight_data[1]
+      puts "El costo total es de #{total_cost}"
+      puts 'Realizar reservación: SI / NO'
+      reservacion_input = STDIN.gets.chomp
+      if reservacion_input == "SI" || reservacion_input == "si"
+        puts "*"*50
+        puts "Reservación correcta"
+        puts "*"*50
+        puts "El costo total es de #{total_cost}"
+        num_booking = "#{rand(500)}-#{rand(9)}"
+        puts "Y tu ID de reservación es la siguiente #{num_booking}"
+        num_booking
+      elsif reservacion_input == "NO" || reservacion_input == "no"        
+        :ticket_canceled
+      end
+    end
   end
 
   def delete
   end
 
-  def update
+  def update(value_to_update)
+    case value_to_update
+      when :booking_done then puts 'reservacion realizada'
+
+    end
+
   end
 
 	def error(type_of_error)
     case type_of_error
       when 0 then puts 'that option doesnt exist'
       when :invalid_user then puts 'usuario no valido'
-      when :no_booking_founded then puts 'ningun vuelo con ese numero'
-
+      when :no_flight_founded then puts 'ningun vuelo con ese numero'
+      when :not_enough_seets then puts 'no suficientes asientos'
     end
 	end
   def input
@@ -67,8 +117,8 @@ class View
     end
   end
 
-  def find_flight(value)
-    case value
+  def find_flight(flight_data)
+    case flight_data
       when :welocome_find_f
         puts "-" * 50
         puts '!!!Bienvenido!!!'
@@ -90,11 +140,9 @@ class View
           puts "*" * 30
         end
         puts 'Selecciona tu numero vuelo:'
-      when :chose_num_of_passengers
-        puts 'ingresa numero de pasajeros'
-        STDIN.gets.chomp
+
       else
-        value.each do |f|
+        flight_data.each do |f|
           puts "Numero de Vuelo:#{f.num_flight}"
           puts "Fecha:#{f.date}"
           puts "Salida:#{f.depart}"
@@ -104,6 +152,14 @@ class View
           puts "Costo:#{f.cost}"
           puts "Pasajeros:#{f.passengers}"
         end
+    end
+  end
+
+  def booking(booking_case)
+    case booking_case
+    when :chose_num_of_passengers
+      puts 'ingresa numero de pasajeros'
+      STDIN.gets.chomp
 
     end
   end

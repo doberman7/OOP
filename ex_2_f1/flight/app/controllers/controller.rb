@@ -6,7 +6,6 @@ class Controller
     index
   end
 
-
   def index
     number_of_option = @argv_ary[0]
     if number_of_option == nil
@@ -24,6 +23,54 @@ class Controller
     end
 
   end
+  #ticket returns returns the 'num_booking' or :ticket_canceled, plus [persons,total_cost]
+  def ticket(fligth,num_of_passangers)
+    ticket_result = @view.ticket(:create_tiket,fligth,num_of_passangers)
+    #'@view.ticket' returns the num_booking or the symbol :ticket_canceled
+    ticket_desicion = @view.ticket(:display_ticket,ticket_result,num_of_passangers)
+    #the output of thos method resturn an array consisting
+      #-ticket_desicion: num_booking
+      #-ticket_result: [persons,total_cost]
+    [ticket_desicion,ticket_result]
+  end
+
+  def booking(founded_plane)
+    #mostrar detalles del vuelo
+    @view.find_flight(founded_plane)
+    #usuario seleccionar numero de pasasjers, el cual se asigna a una variable
+    num_of_passangers = @view.booking(:chose_num_of_passengers)
+    #convertir pasajeros en integer
+    num_of_passangers = num_of_passangers.to_i
+    #iterear en el obje ActiveRecord::Relation
+    founded_plane.each do |flight_data|
+      #si el numero de pasajers es menor al total de asientos disponibles
+      if flight_data.passengers >= num_of_passangers
+        #invocar metodo ticket
+        ticket_ary = ticket(founded_plane,num_of_passangers)
+        #ticket_ary is [ticket_desicion,ticket_result]
+        # if ticket is not canceled...
+        if ticket_ary[0] != :ticket_canceled
+          num_booking = ticket_ary[0]
+          total_cost = ticket_ary[1][1]
+          #restar el numero de pasajeros en el avion
+          flight_data.passengers = flight_data.passengers - num_of_passangers
+          #AQUI
+          #actulizar BD de vuelos
+          p "1"
+          founded_plane.update(flight_data.id, passengers: flight_data.passengers)
+          p "2"
+          p Booking.create!(flight_id: founded_plane.id, num_booking: num_booking, total: total_cost)
+
+          @view.update(:booking_done)#=>"reservacion realizada"
+        #id tiket is canceled users the metod 'find_flight' is invoked
+        elsif ticket_ary[0] == :ticket_canceled
+          find_flight
+        end
+      else
+        @view.error(:not_enough_seets)
+      end
+    end
+  end
 
   def find_flight
     @view.find_flight(:welocome_find_f)
@@ -34,14 +81,8 @@ class Controller
         num_flight = @view.find_flight(:input)
         num_flight = num_flight.to_i
         founded_plane = Flight.where(num_flight: num_flight)
-        #si ningun vuelo tiene ese numero de vuelo entonces muestra error, por el contrario si se encuentra el vuelo el mismo es mostrado
-        founded_plane.empty? ?   @view.error(:no_find_flight_founded): @view.find_flight(founded_plane);
-        num_of_passangers = @view.find_flight(:chose_num_of_passengers)
-        num_of_passangers = num_of_passangers.to_i
-        #-AQUI
-        # founded_plane.each do |plane_data|
-        #   puts founded_plane.passengers > num_of_passangers
-        # end
+        #si ningun vuelo tiene ese numero de vuelo entonces muestra error, por el contrario si se encuentra el vuelo se inicia metodo de reservacion
+        founded_plane.empty? ? @view.error(:no_flight_founded): booking(founded_plane);
         #----------
         find_flight
       when "2" then out
