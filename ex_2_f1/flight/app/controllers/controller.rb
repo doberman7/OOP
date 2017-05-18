@@ -1,5 +1,9 @@
+#Es posible saltar a directamente a los menus 1 y 2, agregandolos al ARGV en la consola al cargar flight.rb
+#respectivamente los menus son:
+# '1) Reservaciones'
+# '2) Administrador'
+#dichos menus son solo para pruebas, user ARGV impide ir al index
 class Controller
-
   def initialize(args)
     @argv_ary = args
     @view = View.new
