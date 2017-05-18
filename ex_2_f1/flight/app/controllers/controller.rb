@@ -154,9 +154,4 @@ class Controller
     admin_menu
   end
 
-  def delete
-  end
-
-  def complete
-  end
 end
